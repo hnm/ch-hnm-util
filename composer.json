@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ch\\hnm\\util": "src/app/ch/hnm/util"
+            "ch\\hnm\\util\\": "src/app/ch/hnm/util"
         }
     }
 }
