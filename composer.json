@@ -1,7 +1,7 @@
 {
     "name": "hnm/n2n-utils",
     "type": "n2n-module",
-    "description": "rocket cmf",
+    "description": "common utils for n2n, rocket and page",
     "keywords": ["cms","cmf","n2n"],
     "homepage": "https://n2n.rocks/",
     "license": "GNU LGPL",
