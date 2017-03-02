@@ -5,6 +5,12 @@
     "keywords": ["cms","cmf","n2n"],
     "homepage": "https://n2n.rocks/",
     "license": "GNU LGPL",
+    "authors": [
+        {
+            "name": "Thomas Jansen",
+            "email": "jansen@hnm.ch"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "n2n/n2n-composer-module-installer": "master-dev"
