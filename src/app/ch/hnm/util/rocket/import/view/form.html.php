@@ -1,11 +1,13 @@
 <?php
 	$importForm = $view->getParam('importForm');
-	$view->assert($importForm instanceof \ch\hnm\util\rocket\import\form\ImportForm);
+    $view->assert($importForm instanceof \ch\hnm\util\rocket\import\form\ImportForm);
+
+    $importUploads = $view->getParam('importUploads');
 
 	$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('Import')));
 ?>
 <div class="rocket-panel">
-	<h3>Eigenschaften</h3>
+	<h3><?php $html->text('rocket_import_title') ?></h3>
 	<?php $formHtml->open($importForm) ?>
 
 	    <?php $formHtml->messageList() ?>
@@ -22,11 +24,12 @@
 				<ul>
 					<li>
 						<?php $formHtml->buttonSubmit('save',
-							new \n2n\web\ui\Raw('<i class="fa fa-save"></i>' . $html->getL10nText('common_save_label')),
-							array('class' => 'rocket-control-warning rocket-important')) ?>
+							new \n2n\web\ui\Raw('<i class="fa fa-cloud-upload"></i> ' . $html->getL10nText('common_upload_label')),
+							array('class' => 'rocket-control-success rocket-important')) ?>
 					</li>
 				</ul>
 			</div>
 		</div>
+
 	<?php $formHtml->close() ?>
 </div>
