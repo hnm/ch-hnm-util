@@ -1,5 +1,5 @@
 {
-    "name": "hnm/n2n-utils",
+    "name": "hnm/ch-hnm-util",
     "type": "n2n-module",
     "description": "common utils for n2n, rocket and page",
     "keywords": ["cms","cmf","n2n"],
