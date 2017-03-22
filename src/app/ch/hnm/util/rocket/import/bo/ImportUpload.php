@@ -1,14 +1,16 @@
 <?php
 namespace ch\hnm\util\rocket\import\bo;
 
-use n2n\persistence\orm\annotation\AnnoId;
 use n2n\persistence\orm\annotation\AnnoManagedFile;
 use n2n\reflection\annotation\AnnoInit;
 use n2n\reflection\ObjectAdapter;
+use n2n\io\managed\File;
+use n2n\persistence\orm\annotation\AnnoDateTime;
 
 class ImportUpload extends ObjectAdapter {
 	private static function _annos(AnnoInit $ai) {
 		$ai->p('file', new AnnoManagedFile());
+		$ai->p('dateTime', new AnnoDateTime());
 	}
 
 	private $id;
@@ -16,6 +18,12 @@ class ImportUpload extends ObjectAdapter {
 	private $eiThingPath;
 	private $file;
 
+	public function __construct(string $eiThingPath = null, File $file = null, \DateTime $dateTime = null) {
+		$this->eiThingPath = $eiThingPath;
+		$this->file = $file;
+		$this->dateTime = $dateTime;
+	}
+	
 	/**
 	 * @return mixed
 	 */
