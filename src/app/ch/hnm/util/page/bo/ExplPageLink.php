@@ -24,7 +24,7 @@ class ExplPageLink extends ObjectAdapter implements UrlComposer {
 	private $type = self::TYPE_INTERNAL;
 	private $linkedPage;
 	private $url;
-	private $showExplicit = false;
+	private $showExplicit = true;
 	private $label;
 
 	/**
