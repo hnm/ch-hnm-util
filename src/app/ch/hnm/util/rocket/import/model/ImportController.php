@@ -11,6 +11,8 @@ use n2n\web\http\controller\ParamGet;
 use n2n\web\http\PageNotFoundException;
 use ch\hnm\util\rocket\import\bo\ImportUpload;
 use ch\hnm\util\rocket\import\bo\Import;
+use ch\hnm\util\rocket\import\form\AssignationForm;
+use n2n\web\http\controller\ParamQuery;
 
 class ImportController extends ControllerAdapter {
 	private $dtc;
@@ -65,24 +67,37 @@ class ImportController extends ControllerAdapter {
 		$rows = $csv->getRows();
 		
 		if ($c !== null) {
-			$this->importDao->saveImportUpload(new ImportUpload($this->eiuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now')));
+			$importUpload = new ImportUpload($this->eiuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now'));
 			
-			$eiFieldCollection = $this->eiuCtrl->frame()->getEiSpec()->getEiEngine()->getEiFieldCollection();
+			$this->beginTransaction();
+			$this->importDao->saveImportUpload($importUpload);
+			$this->commit();
+			
+			$eiFieldCollection = $this->eiuCtrl->frame()->getEiSpec()->getEiEngine()->getEiFieldCollection()->toArray(true);
 			$import = new Import($csv, $eiFieldCollection);
 			
-			$this->redirectToController('assign', array('import' => $import));
+			$this->redirectToController('assign', array('iuId' => $importUpload->getId()));
 			return;
 		}
 		
 		$this->forward('..\view\check-import.html', array('columns' => $columns, 'rows' => $rows));
 	}
 	
-	public function doAssign($iuId) {
+	public function doAssign(ParamQuery $iuId) {
+		$assignationForm = new AssignationForm();
+		if ($this->dispatch($assignationForm, 'assign')) {
+			die;
+		}
+		
+		$iuId = $iuId->toInt();
 		$importUpload = $this->importDao->getImportUploadById($iuId);
 		if ($importUpload === null) {
 			throw new PageNotFoundException();
 		}
 		
-		$this->forward('assign', array('scalarEiProperties' => $this->eiuCtrl->frame()->getScalarEiProperties()));
+		$csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
+		$this->forward('..\view\assign.html', array('csvPropertyNames' => $csv->getColumnNames(),
+				'scalarEiProperties' => $this->eiuCtrl->frame()->getScalarEiProperties(),
+				'assignationForm' => $assignationForm));
 	}
 }
