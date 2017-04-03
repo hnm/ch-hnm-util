@@ -9,6 +9,7 @@ class Import {
 	
 	public function __construct(Csv $csv, array $eiFields) {
 		$this->csv = $csv;
+		$this->eiFields = $eiFields;
 	}
 	
 	public function getCsv() {
