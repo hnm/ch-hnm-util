@@ -13,6 +13,7 @@ use ch\hnm\util\rocket\import\form\AssignationForm;
 <?php $formHtml->open($assignationForm) ?>
 <div class="rocket-panel">
 	<h3>Assign</h3>
+	
 	<table class="rocket-list">
 		<thead>
 			<tr>
@@ -28,11 +29,11 @@ use ch\hnm\util\rocket\import\form\AssignationForm;
 					<th><?php $html->out($csvPropName) ?></th>
 					<?php foreach ($eiProperties as $eiProperty): ?>
 						<td>
-							<?php $html->out($eiProperty->getLabelLstr()) ?>
+							<?php $formHtml->inputRadio('assignations[' . $eiProperty->getLabelLstr() . ']', $csvPropName) ?>
 						</td>
 					<?php endforeach ?>
 				</tr>
-			<?php endforeach; ?>
+			<?php endforeach ?>
 		</tbody>
 	</table>
 </div>

@@ -13,6 +13,11 @@ use ch\hnm\util\rocket\import\bo\ImportUpload;
 use ch\hnm\util\rocket\import\bo\Import;
 use ch\hnm\util\rocket\import\form\AssignationForm;
 use n2n\web\http\controller\ParamQuery;
+use n2n\l10n\MessageContainer;
+use n2n\impl\web\ui\view\json\JsonBuilder;
+use n2n\impl\web\ui\view\json\JsonView;
+use n2n\io\managed\impl\engine\TmpFileEngine;
+use n2n\io\fs\FsPath;
 
 class ImportController extends ControllerAdapter {
 	private $dtc;
@@ -57,7 +62,7 @@ class ImportController extends ControllerAdapter {
 		
 		$sessionFile = $tfm->getSessionFile($qn, $session);
 		if ($sessionFile === null) {
-			throw new PageNotFoundException();
+ 			throw new PageNotFoundException();
 		}
 		
 		$sessionFileData = $sessionFile->getFileSource()->createInputStream()->read();
@@ -65,31 +70,46 @@ class ImportController extends ControllerAdapter {
 		$csv = new Csv($sessionFileData);
 		$columns = $csv->getColumnNames();
 		$rows = $csv->getRows();
-		
 		if ($c !== null) {
 			$importUpload = new ImportUpload($this->eiuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now'));
 			
-			$this->beginTransaction();
 			$this->importDao->saveImportUpload($importUpload);
-			$this->commit();
 			
-			$eiFieldCollection = $this->eiuCtrl->frame()->getEiSpec()->getEiEngine()->getEiFieldCollection()->toArray(true);
+			$eiFieldCollection = $this->eiuCtrl->frame()->getScalarEiProperties();
 			$import = new Import($csv, $eiFieldCollection);
-			
-			$this->redirectToController('assign', array('iuId' => $importUpload->getId()));
+
+			$this->redirectToController(['assign', $importUpload->getId()]);
 			return;
 		}
 		
 		$this->forward('..\view\check-import.html', array('columns' => $columns, 'rows' => $rows));
 	}
 	
-	public function doAssign(ParamQuery $iuId) {
+	public function doAssign(int $iuId, MessageContainer $mc) {
 		$assignationForm = new AssignationForm();
+		
+		$eiuFrame = $this->eiuCtrl->frame();
+		
 		if ($this->dispatch($assignationForm, 'assign')) {
-			die;
+			$this->eiuCtrl->frame()->getScalarEiProperties();
+			
+			$this->buildAssignationJson($assignationForm->getAssignations());
+			
+			//2. next step "save and use"
 		}
 		
-		$iuId = $iuId->toInt();
+		if ($this->dispatch($assignationForm, 'apply')) {
+		
+			$eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
+				
+			$eiuEntry->setScalarValue($eiFieldPath, $scalarValue);
+			if (!$eiuEntry->getEiMapping()->save()) {
+			
+			}
+			
+		}
+		
+		
 		$importUpload = $this->importDao->getImportUploadById($iuId);
 		if ($importUpload === null) {
 			throw new PageNotFoundException();
@@ -99,5 +119,9 @@ class ImportController extends ControllerAdapter {
 		$this->forward('..\view\assign.html', array('csvPropertyNames' => $csv->getColumnNames(),
 				'scalarEiProperties' => $this->eiuCtrl->frame()->getScalarEiProperties(),
 				'assignationForm' => $assignationForm));
+	}
+	
+	private function buildAssignationJson(array $assignations) {
+		test($assignations);
 	}
 }

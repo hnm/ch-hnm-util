@@ -31,9 +31,14 @@ class ImportDao implements RequestScoped {
 	
 	public function saveImportUpload(ImportUpload $iu) {
 		$this->em->persist($iu);
+		$this->em->flush();
 	}
 	
 	public function removeImportUpload(ImportUpload $iu) {
 		$this->em->remove($iu);
+	}
+	
+	public function getLastInsertedImportUpload() {
+		return $this->em->createNqlCriteria('SELECT MAX(iu.id) FROM ImportUpload iu')->toQuery()->fetchSingle();
 	}
 }
