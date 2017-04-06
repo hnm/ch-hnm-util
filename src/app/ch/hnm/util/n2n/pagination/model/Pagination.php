@@ -1,5 +1,4 @@
 <?php
-
 namespace ch\hnm\util\n2n\pagination\model;
 
 use n2n\web\http\Request;
