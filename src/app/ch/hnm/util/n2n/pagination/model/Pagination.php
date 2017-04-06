@@ -1,6 +1,5 @@
 <?php
-
-namespace app\ch\hnm\util\n2n\pagination\model;
+namespace ch\hnm\util\n2n\pagination\model;
 
 use n2n\web\http\Request;
 interface Pagination {

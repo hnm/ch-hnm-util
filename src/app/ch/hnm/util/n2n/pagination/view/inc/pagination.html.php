@@ -1,5 +1,5 @@
 <?php
-	use ch\hnm\util\pagination\model\Pagination;
+	use ch\hnm\util\n2n\pagination\model\Pagination;
 	use n2n\impl\web\ui\view\html\HtmlView;
 	
 	$view = HtmlView::view($view);
