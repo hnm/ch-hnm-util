@@ -1,5 +1,5 @@
 <?php
-namespace app\ch\hnm\util\n2n\pagination;
+namespace app\ch\hnm\util\n2n\pagination\model;
 
 use n2n\web\http\Request;
 abstract class PaginationAdapter implements Pagination {

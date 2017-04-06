@@ -1,7 +1,8 @@
 <?php
-namespace app\ch\hnm\util\n2n\pagination;
 
-class BsPagination extends PaginationAdapter {
+namespace app\ch\hnm\util\n2n\pagination\model;
+
+class SimplePagination extends PaginationAdapter {
 
 	private $currentPageNum;
 	private $numPages;
@@ -29,10 +30,6 @@ class BsPagination extends PaginationAdapter {
 
 	public function setNumPages($numPages) {
 		$this->numPages = $numPages;
-	}
-	
-	public function getPaginationClassName() {
-		return 'pagination justify-content-center';
 	}
 }
 
