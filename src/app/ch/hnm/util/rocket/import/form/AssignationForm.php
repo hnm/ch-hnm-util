@@ -9,18 +9,18 @@ class AssignationForm implements Dispatchable {
 		
 	}
 	
-	public $assignations = array();
+	public $assignationMap = array();
 	
 	public function assign() {
 	
 	}
 	
-	public function setAssignations(array $assignations) {
-		$this->assignations = $assignations;
+	public function setAssignationMap(array $assignations) {
+		$this->assignationMap = $assignations;
 	}
 	
-	public function getAssignations() {
-		return $this->assignations;
+	public function getAssignationMap() {
+		return $this->assignationMap;
 	}
 	
 	private function _validation() {

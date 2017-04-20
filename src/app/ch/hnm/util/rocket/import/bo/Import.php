@@ -5,11 +5,11 @@ use ch\hnm\util\rocket\import\model\Csv;
 
 class Import {
 	private $csv;
-	private $eiFields;
+	private $scalarEiProperties;
 	
-	public function __construct(Csv $csv, array $eiFields) {
+	public function __construct(Csv $csv, array $scalarEiProperties) {
 		$this->csv = $csv;
-		$this->eiFields = $eiFields;
+		$this->scalarEiProperties = $scalarEiProperties;
 	}
 	
 	public function getCsv() {
@@ -19,12 +19,13 @@ class Import {
 	public function setCsv(Csv $csv) {
 		$this->csv = $csv;
 	}
-	
-	public function getEiFieldCollection() {
-		return $this->eiFieldCollection;
-	}
-	
-	public function setEiFieldCollection(array $eiFieldCollection) {
-		$this->eiFieldCollection = $eiFieldCollection;
-	}
+
+    public function getScalarEiProperties() {
+        return $this->scalarEiProperties;
+    }
+
+    public function setScalarEiProperties($scalarEiProperties) {
+        $this->scalarEiProperties = $scalarEiProperties;
+    }
+
 }

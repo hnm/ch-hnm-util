@@ -18,8 +18,8 @@ use ch\hnm\util\rocket\import\form\AssignationForm;
 		<thead>
 			<tr>
 				<th></th>
-				<?php foreach ($eiProperties as $eiProperty): $eiProperty instanceof CommonScalarEiProperty ?>
-					<th><?php $html->out($eiProperty->getLabelLstr()) ?></th>
+				<?php foreach ($eiProperties as $scalarEiProperty): $scalarEiProperty instanceof CommonScalarEiProperty ?>
+					<th><?php $html->out($scalarEiProperty->getLabelLstr()) ?></th>
 				<?php endforeach ?>
 			</tr>
 		</thead>
@@ -27,9 +27,10 @@ use ch\hnm\util\rocket\import\form\AssignationForm;
 			<?php foreach ($csvPropertyNames as $csvPropName): ?>
 				<tr>
 					<th><?php $html->out($csvPropName) ?></th>
-					<?php foreach ($eiProperties as $eiProperty): ?>
+					<?php foreach ($eiProperties as $scalarEiProperty): ?>
 						<td>
-							<?php $formHtml->inputRadio('assignations[' . $eiProperty->getLabelLstr() . ']', $csvPropName) ?>
+							<?php $formHtml->inputRadio('assignationMap[' . $csvPropName  . ']',
+                                (string) $scalarEiProperty->getEiFieldPath()) ?>
 						</td>
 					<?php endforeach ?>
 				</tr>

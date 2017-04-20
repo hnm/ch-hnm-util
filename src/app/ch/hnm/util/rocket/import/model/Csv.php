@@ -28,7 +28,11 @@ class Csv {
 		$dataArr = array();
 		
 		foreach ($lines as $line) {
-			$dataArr[] = explode(',', $line);
+			$lineArr = [];
+			foreach (explode(',', $line) as $colIndex => $val) {
+                $lineArr[$this->columnNames[$colIndex]] = $val;
+            }
+            $dataArr[] = $lineArr;
 		}
 
 		return $dataArr;

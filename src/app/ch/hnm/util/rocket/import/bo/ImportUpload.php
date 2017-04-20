@@ -16,6 +16,7 @@ class ImportUpload extends ObjectAdapter {
 	private $id;
 	private $dateTime;
 	private $eiThingPath;
+	private $assignationJson;
 	private $file;
 
 	public function __construct(string $eiThingPath = null, File $file = null, \DateTime $dateTime = null) {
@@ -65,6 +66,14 @@ class ImportUpload extends ObjectAdapter {
 	public function setEiThingPath($eiThingPath) {
 		$this->eiThingPath = $eiThingPath;
 	}
+
+	public function getAssignationJson() {
+	    return $this->assignationJson;
+    }
+
+    public function setAssignationJson(string $assignationJson) {
+	    $this->assignationJson = $assignationJson;
+    }
 
 	/**
 	 * @return mixed

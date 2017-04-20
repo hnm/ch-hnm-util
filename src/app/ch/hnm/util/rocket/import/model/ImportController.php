@@ -2,8 +2,15 @@
 namespace ch\hnm\util\rocket\import\model;
 
 use ch\hnm\util\rocket\import\form\ImportForm;
+use n2n\core\N2N;
+use n2n\core\VarStore;
+use n2n\io\IoUtils;
+use n2n\io\managed\File;
+use n2n\io\managed\impl\FileFactory;
 use n2n\l10n\DynamicTextCollection;
+use n2n\persistence\orm\EntityManager;
 use n2n\web\http\controller\ControllerAdapter;
+use rocket\spec\ei\EiFieldPath;
 use rocket\spec\ei\manage\util\model\EiuCtrl;
 use n2n\io\managed\impl\TmpFileManager;
 use n2n\web\http\Session;
@@ -18,6 +25,7 @@ use n2n\impl\web\ui\view\json\JsonBuilder;
 use n2n\impl\web\ui\view\json\JsonView;
 use n2n\io\managed\impl\engine\TmpFileEngine;
 use n2n\io\fs\FsPath;
+use rocket\spec\ei\manage\util\model\EiuFrame;
 
 class ImportController extends ControllerAdapter {
 	private $dtc;
@@ -74,9 +82,9 @@ class ImportController extends ControllerAdapter {
 			$importUpload = new ImportUpload($this->eiuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now'));
 			
 			$this->importDao->saveImportUpload($importUpload);
-			
-			$eiFieldCollection = $this->eiuCtrl->frame()->getScalarEiProperties();
-			$import = new Import($csv, $eiFieldCollection);
+
+			$scalarEiProperties = $this->eiuCtrl->frame()->getScalarEiProperties();
+			$import = new Import($csv, $scalarEiProperties);
 
 			$this->redirectToController(['assign', $importUpload->getId()]);
 			return;
@@ -85,43 +93,54 @@ class ImportController extends ControllerAdapter {
 		$this->forward('..\view\check-import.html', array('columns' => $columns, 'rows' => $rows));
 	}
 	
-	public function doAssign(int $iuId, MessageContainer $mc) {
-		$assignationForm = new AssignationForm();
-		
-		$eiuFrame = $this->eiuCtrl->frame();
-		
-		if ($this->dispatch($assignationForm, 'assign')) {
-			$this->eiuCtrl->frame()->getScalarEiProperties();
-			
-			$this->buildAssignationJson($assignationForm->getAssignations());
-			
-			//2. next step "save and use"
-		}
-		
-		if ($this->dispatch($assignationForm, 'apply')) {
-		
-			$eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
-				
-			$eiuEntry->setScalarValue($eiFieldPath, $scalarValue);
-			if (!$eiuEntry->getEiMapping()->save()) {
-			
-			}
-			
-		}
-		
-		
-		$importUpload = $this->importDao->getImportUploadById($iuId);
-		if ($importUpload === null) {
-			throw new PageNotFoundException();
-		}
-		
+	public function doAssign(int $iuId, EntityManager $em) {
+        $importUpload = $this->importDao->getImportUploadById($iuId);
+        if ($importUpload === null) {
+            throw new PageNotFoundException();
+        }
+
+        $assignationForm = new AssignationForm();
+        $seps = $this->eiuCtrl->frame()->getScalarEiProperties();
+
+        if ($this->dispatch($assignationForm, 'assign')) {
+            $assignationMap = $assignationForm->getAssignationMap();
+            $importUpload->setAssignationJson(json_encode($assignationMap));
+            $this->forward('..\view\assign-check.html', array('assignationMap' => $assignationMap,
+                    'iuId' => $iuId));
+            return;
+        }
+
 		$csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
 		$this->forward('..\view\assign.html', array('csvPropertyNames' => $csv->getColumnNames(),
-				'scalarEiProperties' => $this->eiuCtrl->frame()->getScalarEiProperties(),
+				'scalarEiProperties' => $seps,
 				'assignationForm' => $assignationForm));
 	}
-	
-	private function buildAssignationJson(array $assignations) {
-		test($assignations);
-	}
+
+	public function doExecute(int $iuId) {
+        $importUpload = $this->importDao->getImportUploadById($iuId);
+        if ($importUpload === null) {
+            throw new PageNotFoundException();
+        }
+
+        $assignationMap = (array)json_decode($importUpload->getAssignationJson());
+        $csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
+
+        $eiuFrame = $this->eiuCtrl->frame();
+        $eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
+
+        foreach ($csv->getRows() as $row) {
+            foreach ($row as $key => $value) {
+                if (isset($assignationMap[$key])) {
+                    $eiuEntry->setScalarValue($assignationMap[$key], $value);
+                }
+            }
+        }
+
+        if (!$eiuEntry->getEiMapping()->save()) {
+            foreach ($assignationMap as $key => $value) {
+                test($key);
+                test($eiuEntry->getEiMapping()->getMappingErrorInfo()->getFieldErrorInfo(EiFieldPath::create($value)));
+            }
+        }
+    }
 }
