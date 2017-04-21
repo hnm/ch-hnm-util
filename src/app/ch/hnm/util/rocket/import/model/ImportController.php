@@ -9,6 +9,7 @@ use n2n\io\managed\File;
 use n2n\io\managed\impl\FileFactory;
 use n2n\l10n\DynamicTextCollection;
 use n2n\persistence\orm\EntityManager;
+use n2n\reflection\property\ValueIncompatibleWithConstraintsException;
 use n2n\web\http\controller\ControllerAdapter;
 use rocket\spec\ei\EiFieldPath;
 use rocket\spec\ei\manage\util\model\EiuCtrl;
@@ -30,6 +31,9 @@ use rocket\spec\ei\manage\util\model\EiuFrame;
 class ImportController extends ControllerAdapter {
 	private $dtc;
 	private $importDao;
+	/**
+	 * @var EiuCtrl
+	 */
 	private $eiuCtrl;
 
 	private function _init(DynamicTextCollection $dtc, ImportDao $importDao) {
@@ -116,31 +120,42 @@ class ImportController extends ControllerAdapter {
 				'assignationForm' => $assignationForm));
 	}
 
-	public function doExecute(int $iuId) {
+	public function doExecute(int $iuId, MessageContainer $mc) {
         $importUpload = $this->importDao->getImportUploadById($iuId);
         if ($importUpload === null) {
             throw new PageNotFoundException();
         }
 
-        $assignationMap = (array)json_decode($importUpload->getAssignationJson());
+        $assignationMap = json_decode($importUpload->getAssignationJson(), true);
         $csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
 
         $eiuFrame = $this->eiuCtrl->frame();
-        $eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
 
         foreach ($csv->getRows() as $row) {
+            $eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
+
             foreach ($row as $key => $value) {
+				$value = utf8_encode($value);
                 if (isset($assignationMap[$key])) {
-                    $eiuEntry->setScalarValue($assignationMap[$key], $value);
+                    $eiFieldPathStr = $assignationMap[$key];
+                    try {
+						$eiuEntry->setScalarValue($eiFieldPathStr, $value);
+					} catch (ValueIncompatibleWithConstraintsException $e) {
+                    	$mc->addError("Invalid value for " . $eiuFrame->getEiMask()->getEiEngine()
+								->getScalarEiDefinition()->getScalarEiPropertyByFieldPath($eiFieldPathStr)
+								->getLabelLstr());
+					}
                 }
             }
+
+            if (!$eiuEntry->getEiMapping()->save()) {
+				$mc->addAll($eiuEntry->getEiMapping()->getMappingErrorInfo()->getMessages());
+            } else {
+				$eiuFrame->em()->persist($eiuEntry->getLiveEntry()->getEntityObj());
+				$eiuFrame->em()->flush();
+			}
         }
 
-        if (!$eiuEntry->getEiMapping()->save()) {
-            foreach ($assignationMap as $key => $value) {
-                test($key);
-                test($eiuEntry->getEiMapping()->getMappingErrorInfo()->getFieldErrorInfo(EiFieldPath::create($value)));
-            }
-        }
+		$this->forward('..\view\confirmation.html', array ('messageContainer' => $mc));
     }
 }

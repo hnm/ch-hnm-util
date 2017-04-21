@@ -18,23 +18,25 @@ use ch\hnm\util\rocket\import\form\AssignationForm;
 		<thead>
 			<tr>
 				<th></th>
-				<?php foreach ($eiProperties as $scalarEiProperty): $scalarEiProperty instanceof CommonScalarEiProperty ?>
-					<th><?php $html->out($scalarEiProperty->getLabelLstr()) ?></th>
-				<?php endforeach ?>
+                <?php foreach ($csvPropertyNames as $csvPropName): ?>
+                    <th><?php $html->out($csvPropName) ?></th>
+                <?php endforeach ?>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($csvPropertyNames as $csvPropName): ?>
-				<tr>
-					<th><?php $html->out($csvPropName) ?></th>
-					<?php foreach ($eiProperties as $scalarEiProperty): ?>
-						<td>
-							<?php $formHtml->inputRadio('assignationMap[' . $csvPropName  . ']',
+            <?php foreach ($eiProperties as $scalarEiProperty): ?>
+                <tr>
+                    <th>
+                        <?php $html->out((string) $scalarEiProperty->getLabelLStr()) ?>
+                    </th>
+                    <?php foreach ($csvPropertyNames as $csvPropName): ?>
+                        <td>
+                            <?php $formHtml->inputRadio('assignationMap[' . $csvPropName  . ']',
                                 (string) $scalarEiProperty->getEiFieldPath()) ?>
-						</td>
-					<?php endforeach ?>
-				</tr>
-			<?php endforeach ?>
+                        </td>
+                    <?php endforeach ?>
+                </tr>
+            <?php endforeach ?>
 		</tbody>
 	</table>
 </div>
