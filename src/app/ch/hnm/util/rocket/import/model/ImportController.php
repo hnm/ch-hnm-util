@@ -1,32 +1,21 @@
 <?php
 namespace ch\hnm\util\rocket\import\model;
 
+use rocket\spec\ei\manage\util\model\EiuCtrl;
 use ch\hnm\util\rocket\import\form\ImportForm;
-use n2n\core\N2N;
-use n2n\core\VarStore;
-use n2n\io\IoUtils;
-use n2n\io\managed\File;
-use n2n\io\managed\impl\FileFactory;
 use n2n\l10n\DynamicTextCollection;
 use n2n\persistence\orm\EntityManager;
 use n2n\reflection\property\ValueIncompatibleWithConstraintsException;
 use n2n\web\http\controller\ControllerAdapter;
-use rocket\spec\ei\EiFieldPath;
-use rocket\spec\ei\manage\util\model\EiuCtrl;
+use ch\hnm\util\rocket\import\bo\ImportUpload;
+use ch\hnm\util\rocket\import\bo\Import;
+use ch\hnm\util\rocket\import\form\AssignationForm;
+use ch\hnm\util\rocket\import\bo\Csv;
+use n2n\l10n\MessageContainer;
 use n2n\io\managed\impl\TmpFileManager;
 use n2n\web\http\Session;
 use n2n\web\http\controller\ParamGet;
 use n2n\web\http\PageNotFoundException;
-use ch\hnm\util\rocket\import\bo\ImportUpload;
-use ch\hnm\util\rocket\import\bo\Import;
-use ch\hnm\util\rocket\import\form\AssignationForm;
-use n2n\web\http\controller\ParamQuery;
-use n2n\l10n\MessageContainer;
-use n2n\impl\web\ui\view\json\JsonBuilder;
-use n2n\impl\web\ui\view\json\JsonView;
-use n2n\io\managed\impl\engine\TmpFileEngine;
-use n2n\io\fs\FsPath;
-use rocket\spec\ei\manage\util\model\EiuFrame;
 
 class ImportController extends ControllerAdapter {
 	private $dtc;
@@ -73,28 +62,21 @@ class ImportController extends ControllerAdapter {
 		$this->eiuCtrl->applyCommonBreadcrumbs(null, $this->dtc->translate('rocket_import_breadcrumb'));
 		
 		$sessionFile = $tfm->getSessionFile($qn, $session);
+		$csv = new Csv($sessionFile->getFileSource()->createInputStream()->read());
+
 		if ($sessionFile === null) {
  			throw new PageNotFoundException();
 		}
-		
-		$sessionFileData = $sessionFile->getFileSource()->createInputStream()->read();
-		
-		$csv = new Csv($sessionFileData);
-		$columns = $csv->getColumnNames();
-		$rows = $csv->getRows();
+
 		if ($c !== null) {
 			$importUpload = new ImportUpload($this->eiuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now'));
-			
 			$this->importDao->saveImportUpload($importUpload);
-
-			$scalarEiProperties = $this->eiuCtrl->frame()->getScalarEiProperties();
-			$import = new Import($csv, $scalarEiProperties);
 
 			$this->redirectToController(['assign', $importUpload->getId()]);
 			return;
 		}
 		
-		$this->forward('..\view\check-import.html', array('columns' => $columns, 'rows' => $rows));
+		$this->forward('..\view\check-import.html', array('csv' => $csv));
 	}
 	
 	public function doAssign(int $iuId, EntityManager $em) {
@@ -131,13 +113,14 @@ class ImportController extends ControllerAdapter {
 
         $eiuFrame = $this->eiuCtrl->frame();
 
-        foreach ($csv->getRows() as $row) {
+        foreach ($csv->getCsvLines() as $cl) {
             $eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
 
-            foreach ($row as $key => $value) {
+            foreach ($cl->getValues() as $key => $value) {
 				$value = utf8_encode($value);
                 if (isset($assignationMap[$key])) {
                     $eiFieldPathStr = $assignationMap[$key];
+
                     try {
 						$eiuEntry->setScalarValue($eiFieldPathStr, $value);
 					} catch (ValueIncompatibleWithConstraintsException $e) {
@@ -153,9 +136,22 @@ class ImportController extends ControllerAdapter {
             } else {
 				$eiuFrame->em()->persist($eiuEntry->getLiveEntry()->getEntityObj());
 				$eiuFrame->em()->flush();
-			}
+
+				$eiuEntry->getLiveEntry()->refreshId();
+				$cl->setEntityIdRep($eiuEntry->getLiveIdRep());
+				$importUpload->setStateJson($csv->buildStateJson());
+            }
         }
 
 		$this->forward('..\view\confirmation.html', array ('messageContainer' => $mc));
     }
+
+    public function doEdit(int $iuId) {
+		$importUpload = $this->importDao->getImportUploadById($iuId);
+		if ($importUpload === null) {
+			throw new PageNotFoundException();
+		}
+
+
+	}
 }

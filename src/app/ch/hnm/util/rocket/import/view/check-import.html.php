@@ -1,9 +1,9 @@
 <?php
 	use n2n\web\ui\Raw;
-	
-	$columns = $view->getParam('columns');
-	$rows = $view->getParam('rows');
-	
+
+	$csv = $view->getParam('csv');
+	$view->assert($csv instanceof \ch\hnm\util\rocket\import\bo\Csv);
+
 	$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('Import')));
 ?>
 <div class="rocket-panel">
@@ -11,17 +11,17 @@
 	<table class="rocket-list">
 		<thead>
 			<tr>
-				<?php foreach($columns as $column): ?>
-					<th><?php $html->out($column) ?></th>
+				<?php foreach($csv->getColumnNames() as $columnName): ?>
+					<th><?php $html->out($columnName) ?></th>
 				<?php endforeach ?>
 			</tr>
-		</thead>
-		<?php foreach ($rows as $row): ?>
-			<tr>
-				<?php foreach ($row as $cell): ?>
-					<td><?php $html->out($cell) ?></td>
+        </thead>
+		<?php foreach ($csv->getCsvLines() as $cl): ?>
+            <tr>
+				<?php foreach ($cl->getValues() as $value): ?>
+                    <td><?php $html->out($value) ?></td>
 				<?php endforeach ?>
-			</tr>
+            </tr>
 		<?php endforeach ?>
 	</table>
 </div>

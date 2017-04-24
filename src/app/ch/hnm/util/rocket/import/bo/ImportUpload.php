@@ -17,6 +17,7 @@ class ImportUpload extends ObjectAdapter {
 	private $dateTime;
 	private $eiThingPath;
 	private $assignationJson;
+	private $stateJson;
 	private $file;
 
 	public function __construct(string $eiThingPath = null, File $file = null, \DateTime $dateTime = null) {
@@ -24,45 +25,27 @@ class ImportUpload extends ObjectAdapter {
 		$this->file = $file;
 		$this->dateTime = $dateTime;
 	}
-	
-	/**
-	 * @return mixed
-	 */
+
 	public function getId() {
 		return $this->id;
 	}
 
-	/**
-	 * @param mixed $id
-	 */
 	public function setId($id) {
 		$this->id = $id;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getDateTime() {
 		return $this->dateTime;
 	}
 
-	/**
-	 * @param mixed $dateTime
-	 */
 	public function setDateTime($dateTime) {
 		$this->dateTime = $dateTime;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getEiThingPath() {
 		return $this->eiThingPath;
 	}
 
-	/**
-	 * @param mixed $eiThingPath
-	 */
 	public function setEiThingPath($eiThingPath) {
 		$this->eiThingPath = $eiThingPath;
 	}
@@ -75,16 +58,18 @@ class ImportUpload extends ObjectAdapter {
 	    $this->assignationJson = $assignationJson;
     }
 
-	/**
-	 * @return mixed
-	 */
 	public function getFile() {
 		return $this->file;
 	}
 
-	/**
-	 * @param mixed $file
-	 */
+	public function getStateJson() {
+		return $this->stateJson;
+	}
+
+	public function setStateJson($stateJson) {
+		$this->stateJson = $stateJson;
+	}
+
 	public function setFile($file) {
 		$this->file = $file;
 	}

@@ -26,6 +26,8 @@ $view->useTemplate('\rocket\core\view\template.html', array('title' => $view->ge
 
 <div id="rocket-page-controls">
     <ul>
-        <li><?php $html->linkToController(array('execute', $view->getParam('iuId')), 'Continue', array('class' => 'btn btn-default')) ?></li>
+        <li>
+            <?php $html->linkToController(array('execute', $view->getParam('iuId')), 'Continue', array('class' => 'rocket-control-success rocket-important')) ?>
+        </li>
     </ul>
 </div>
