@@ -46,11 +46,11 @@
 			Existing Language Keys
 		</h2>
 		<label class="radio">
-			<?php //$formHtml->inputRadio('skipTranslated', true) ?>
+			<?php $formHtml->inputRadio('skipTranslated', true) ?>
 			Skip existing Language Keys
 		</label>
 		<label class="radio">
-			<?php //$formHtml->inputRadio('skipTranslated', false) ?>
+			<?php $formHtml->inputRadio('skipTranslated', false) ?>
 			Print Translations 
 		</label>
 	</div>
