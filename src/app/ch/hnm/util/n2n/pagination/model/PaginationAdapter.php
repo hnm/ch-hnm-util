@@ -51,10 +51,10 @@ abstract class PaginationAdapter implements Pagination {
 	}
 	
 	public function getPreviousLabel() {
-		return 'Â«';
+		return '«';
 	}
 	
 	public function getNextLabel() {
-		return 'Â»';
+		return '»';
 	}
 }

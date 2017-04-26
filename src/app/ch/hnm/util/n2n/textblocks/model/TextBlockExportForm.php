@@ -99,9 +99,9 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 	
 	public static function getLocaleIdOptions() {
 		$localeIdOptions = array();
-		$defaultLocale = N2nLocale::getDefault();
+// 		$defaultLocale = N2nLocale::getDefault();
 		foreach (N2N::getN2nLocales() as $locale) {
-			if ($locale->equals($defaultLocale)) continue;
+// 			if ($locale->equals($defaultLocale)) continue;
 			$localeIdOptions[$locale->getId()] = $locale->getLanguage();
 		}
 		return $localeIdOptions;
