@@ -19,7 +19,7 @@ class CsvLine {
 		}
 
 		while (null != ($colName = array_shift($colNames))) {
-			$values[$colName] = array_shift($cells);
+			$values[$colName] = utf8_encode(array_shift($cells));
 		}
 
 		return new CsvLine($values, $num);

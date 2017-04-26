@@ -1,6 +1,8 @@
 <?php
 namespace ch\hnm\util\rocket\import\bo;
 
+use n2n\util\StringUtils;
+
 class Csv {
 	private $csvStr;
 	private $csvLines = array();
@@ -19,14 +21,16 @@ class Csv {
 		}
 	}
 
-	public function buildStateJson() {
+	public function buildStateJson(string $state) {
 		$stateJsonArr = array();
 
+		$stateJsonArr['state'] = $state;
+
 		foreach ($this->csvLines as $cl) {
-			$stateJsonArr['uploaded'][] = array('lineNum' => $cl->getNum(), 'id' => $cl->getEntityIdRep());
+			$stateJsonArr['uploaded'][] = array('lineNum' => $cl->getNum(), 'idRep' => $cl->getEntityIdRep());
 		}
 
-		return json_encode($stateJsonArr);
+		return StringUtils::jsonEncode($stateJsonArr);
 	}
 
 	public function getColumnNames() {

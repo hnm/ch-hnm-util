@@ -28,7 +28,7 @@
 <div id="rocket-page-controls">
 	<ul>
 		<li>
-			<?php $html->linkToUrl(null, new Raw('<i class="fa fa-cloud-upload"></i> ' . $html->getL10nText('common_upload_label')),
+			<?php $html->linkToUrl(null, new Raw('<i class="fa fa-cloud-upload"></i> ' . $html->getL10nText('rocket_import_confirm_label')),
 						array('class' => 'rocket-control-success rocket-important'), array('c' => 1)) ?>
 		</li>
 	</ul>

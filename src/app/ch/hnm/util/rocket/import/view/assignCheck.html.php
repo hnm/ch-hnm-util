@@ -2,11 +2,12 @@
 use rocket\spec\ei\manage\generic\CommonScalarEiProperty;
 
 $assignationMap = $view->getParam('assignationMap');
+$scalarEiProperties = $view->getParam('scalarEiProperties');
 
-$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('Assert')));
+$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('rocket_import_check_title')));
 ?>
 <div class="rocket-panel">
-    <h3>Assign</h3>
+    <h3><?php $html->text('rocket_import_check_assign_title')?></h3>
 
     <table class="rocket-list">
         <tbody>
@@ -16,7 +17,7 @@ $view->useTemplate('\rocket\core\view\template.html', array('title' => $view->ge
                         <?php $html->out($prop1) ?>
                     </td>
                     <td>
-                        <?php $html->out($prop2) ?>
+                        <?php $html->out($scalarEiProperties[$prop2]->getLabelLStr()) ?>
                     </td>
                 </tr>
             <?php endforeach ?>
@@ -27,7 +28,7 @@ $view->useTemplate('\rocket\core\view\template.html', array('title' => $view->ge
 <div id="rocket-page-controls">
     <ul>
         <li>
-            <?php $html->linkToController(array('execute', $view->getParam('iuId')), 'Continue', array('class' => 'rocket-control-success rocket-important')) ?>
+            <?php $html->linkToController(array('execute', $view->getParam('iuId')), $html->getText('rocket_import_execute_label'), array('class' => 'rocket-control-success rocket-important')) ?>
         </li>
     </ul>
 </div>
