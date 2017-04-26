@@ -52,11 +52,9 @@ class ImportController extends ControllerAdapter {
 	}
 
 	public function doDelete(int $id) {
-		if (null === ($iu = $this->importDao->getImportUploadById($id))) {
-			throw new PageNotFoundException();
-		}
+		$importUpload = $this->getImportUploadById($id);
 		
-		$this->importDao->removeImportUpload($iu);
+		$this->importDao->removeImportUpload($importUpload);
 		$this->redirectToController();
 	}
 	
@@ -87,11 +85,7 @@ class ImportController extends ControllerAdapter {
 	}
 	
 	public function doAssign(int $iuId, EntityManager $em) {
-		$importUpload = $this->importDao->getImportUploadById($iuId);
-        if ($importUpload === null) {
-            throw new PageNotFoundException();
-        }
-
+		$importUpload = $this->getImportUploadById($iuId);
 		$this->applyBreadCrumbs(2);
 
         $assignationForm = new AssignationForm();
@@ -112,14 +106,9 @@ class ImportController extends ControllerAdapter {
 	}
 
 	public function doExecute(int $iuId, MessageContainer $mc) {
-        $importUpload = $this->importDao->getImportUploadById($iuId);
-        if ($importUpload === null) {
-            throw new PageNotFoundException();
-        }
+        $importUpload = $this->getImportUploadById($iuId);
 
 		$this->applyBreadCrumbs(3);
-
-		$this->removeEntriesFromAssignationJsonArr(StringUtils::jsonDecode($importUpload->getStateJson(), true));
 
 		$importUpload->execute($importUpload, $mc, $this->dtc, $this->eiuCtrl->frame());
 
@@ -127,12 +116,7 @@ class ImportController extends ControllerAdapter {
     }
 
 	public function doRemoveEntries(int $iuId) {
-		$importUpload = $this->importDao->getImportUploadById($iuId);
-
-		if (null === $importUpload) {
-			throw new PageNotFoundException();
-		}
-
+		$importUpload = $this->getImportUploadById($iuId);
 		$stateJson = StringUtils::jsonDecode($importUpload->getStateJson(), true);
 		if (null === $stateJson || !isset($stateJson['state']) || $stateJson['state'] !== ImportUpload::STATE_FINISHED) {
 			throw new PageNotFoundException();
@@ -142,6 +126,11 @@ class ImportController extends ControllerAdapter {
 		$importUpload->setStateJson(StringUtils::jsonEncode(array('state' => ImportUpload::STATE_DELETED, 'uploaded' => [])));
 
 		$this->redirectToController(null);
+	}
+
+	public function doReset(int $iuId) {
+		$importUpload = $this->importDao->getImportUploadById($iuId);
+		$importUpload->setStateJson(StringUtils::jsonEncode(array('state' => ImportUpload::STATE_UNFINISHED, 'uploaded' => [])));
 	}
 
 	private function removeEntriesFromAssignationJsonArr(array $stateJson) {
@@ -177,5 +166,15 @@ class ImportController extends ControllerAdapter {
 		}
 
 		$this->eiuCtrl->applyBreandcrumbs(...$bcs);
+	}
+
+	private function getImportUploadById(int $iuId, bool $mandatory = true) {
+		$importUpload = $this->importDao->getImportUploadById($iuId);
+
+		if (null === $importUpload && $mandatory) {
+			throw new PageNotFoundException();
+		}
+
+		return $importUpload;
 	}
 }

@@ -50,6 +50,15 @@
 						<?php endif ?>
 
                         <li>
+							<?php $html->linkToController(array('reset', $importUpload->getId()),
+								new n2n\web\ui\Raw('<i class="fa fa-refresh"></i> <span>Reset</span>'),
+								array('class' => 'rocket-control rocket-important',
+									'data-rocket-confirm-msg' => $html->getText('rocket_import_sure_reset_import_upload_question'),
+									'data-rocket-confirm-ok-label' => $html->getText('rocket_import_yes_label') ,
+									'data-rocket-confirm-cancel-label'=> $html->getText('rocket_import_no_label'))) ?>
+                        </li>
+
+                        <li>
 							<?php $html->linkToController(array('delete', $importUpload->getId()),
 								new n2n\web\ui\Raw('<i class="fa fa-times"></i> <span>Löschen</span>'),
 								array('class' => 'rocket-control rocket-important',
