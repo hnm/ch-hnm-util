@@ -3,6 +3,8 @@ use rocket\spec\ei\manage\generic\CommonScalarEiProperty;
 
 $assignationMap = $view->getParam('assignationMap');
 $scalarEiProperties = $view->getParam('scalarEiProperties');
+$uploadedArr = $view->getParam('uploadedArr');
+$csvLines = $view->getParam('csvLines');
 
 $view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('rocket_import_check_title')));
 ?>
@@ -23,6 +25,11 @@ $view->useTemplate('\rocket\core\view\template.html', array('title' => $view->ge
             <?php endforeach ?>
         </tbody>
     </table>
+</div>
+
+<div class="rocket-panel">
+    Werden hochgelanden: <?php $html->out(count($csvLines) - count($uploadedArr)) ?>
+    Hochgeladen: <?php $html->out(count($uploadedArr)) ?>
 </div>
 
 <div id="rocket-page-controls">

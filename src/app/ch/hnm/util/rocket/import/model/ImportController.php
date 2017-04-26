@@ -87,18 +87,20 @@ class ImportController extends ControllerAdapter {
 	public function doAssign(int $iuId, EntityManager $em) {
 		$importUpload = $this->getImportUploadById($iuId);
 		$this->applyBreadCrumbs(2);
+		$csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
 
         $assignationForm = new AssignationForm();
         if ($this->dispatch($assignationForm, 'assign')) {
-            $assignationMap = $assignationForm->getAssignationMap();
+        	$assignationMap = $assignationForm->getAssignationMap();
             $importUpload->setAssignationJson(StringUtils::jsonEncode($assignationMap));
             $scalarEiProperties = $this->eiuCtrl->frame()->getScalarEiProperties();
             $this->forward('..\view\assignCheck.html', array('assignationMap' => $assignationMap,
-                    'iuId' => $iuId, 'scalarEiProperties' => $scalarEiProperties));
+                    'iuId' => $iuId, 'scalarEiProperties' => $scalarEiProperties,
+					'csvLines' => $csvLines = $csv->getCsvLines(),
+					'uploadedArr' => $this->buildUploadedArr($importUpload)));
             return;
         }
 
-		$csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
 		$this->forward('..\view\assign.html', array('importUpload' => $importUpload,
 				'csvPropertyNames' => $csv->getColumnNames(),
 				'scalarEiProperties' => $this->eiuCtrl->frame()->getScalarEiProperties(),
@@ -110,10 +112,35 @@ class ImportController extends ControllerAdapter {
 
 		$this->applyBreadCrumbs(3);
 
-		$importUpload->execute($importUpload, $mc, $this->dtc, $this->eiuCtrl->frame());
+		$importUpload->execute($importUpload, $this->buildUploadedArr($importUpload), $mc, $this->dtc, $this->eiuCtrl->frame());
 
 		$this->forward('..\view\confirmation.html', array ('messageContainer' => $mc));
     }
+
+    private function buildUploadedArr(ImportUpload $importUpload) {
+		if (!$importUpload->getStateJson() === null) return array();
+
+		$uploadedLineNums = array();
+		$eiuFrame = $this->eiuCtrl->frame();
+		foreach (StringUtils::jsonDecode($importUpload->getStateJson(), true)['uploaded'] as $entityJsonNote) {
+			$uploaded = true;
+
+			$eiSelection = null;
+			try {
+				$eiuFrame->lookupEiSelectionById($eiuFrame->idRepToId($entityJsonNote['idRep']));
+			} catch (\TypeError $e) {
+				$uploaded = false;
+			} catch (UnknownEntryException $e) {
+				$uploaded = false;
+			}
+
+			if ($uploaded) {
+				$uploadedLineNums[$entityJsonNote['lineNum']] = $entityJsonNote['lineNum'];
+			}
+		};
+
+		return $uploadedLineNums;
+	}
 
 	public function doRemoveEntries(int $iuId) {
 		$importUpload = $this->getImportUploadById($iuId);

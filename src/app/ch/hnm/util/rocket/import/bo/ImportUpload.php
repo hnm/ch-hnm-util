@@ -37,7 +37,7 @@ class ImportUpload extends ObjectAdapter {
 		$this->stateJson = StringUtils::jsonEncode(array('state' => ImportUpload::STATE_UNFINISHED));
 	}
 
-	public function execute(ImportUpload $importUpload, MessageContainer $mc, DynamicTextCollection $dtc, EiuFrame $eiuFrame) {
+	public function execute(ImportUpload $importUpload, array $uploadedArr, MessageContainer $mc, DynamicTextCollection $dtc, EiuFrame $eiuFrame) {
 		$hasErrors = false;
 		$assignationMap = StringUtils::jsonDecode($importUpload->getAssignationJson(), true);
 
@@ -48,6 +48,11 @@ class ImportUpload extends ObjectAdapter {
 		$csv = new Csv($importUpload->getFile()->getFileSource()->createInputStream()->read());
 
 		foreach ($csv->getCsvLines() as $cl) {
+
+			if (isset($uploadedArr[$cl->getNum()])) {
+				continue;
+			}
+
 			$eiuEntry = $eiuFrame->entry($eiuFrame->createNewEiSelection(false));
 
 			foreach ($cl->getValues() as $key => $value) {
