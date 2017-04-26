@@ -3,6 +3,7 @@ namespace ch\hnm\util\rocket\import\model;
 
 use n2n\io\IoUtils;
 use n2n\util\StringUtils;
+use rocket\core\model\Breadcrumb;
 use rocket\spec\ei\manage\util\model\EiuCtrl;
 use ch\hnm\util\rocket\import\form\ImportForm;
 use n2n\l10n\DynamicTextCollection;
@@ -36,7 +37,7 @@ class ImportController extends ControllerAdapter {
 	}
 	
 	public function index(TmpFileManager $tmpFileManager, Session $session) {
-		$this->eiuCtrl->applyCommonBreadcrumbs(null, $this->dtc->translate('rocket_import_upload_breadcrumb'));
+		$this->applyBreadCrumbs(1);
 
 		$importForm = new ImportForm();
 
@@ -60,7 +61,7 @@ class ImportController extends ControllerAdapter {
 	}
 	
 	public function doCheckImport(ParamGet $c = null, ParamGet $qn, TmpFileManager $tfm, Session $session) {
-		$this->eiuCtrl->applyCommonBreadcrumbs(null, $this->dtc->translate('rocket_import_check_import_breadcrumb'));
+		$this->applyBreadCrumbs(1);
 		
 		$sessionFile = $tfm->getSessionFile($qn, $session);
 
@@ -86,17 +87,15 @@ class ImportController extends ControllerAdapter {
 	}
 	
 	public function doAssign(int $iuId, EntityManager $em) {
-		$this->eiuCtrl->applyCommonBreadcrumbs(null, $this->dtc->translate('rocket_import_assign_breadcrumb'));
-
 		$importUpload = $this->importDao->getImportUploadById($iuId);
         if ($importUpload === null) {
             throw new PageNotFoundException();
         }
 
+		$this->applyBreadCrumbs(2);
+
         $assignationForm = new AssignationForm();
         if ($this->dispatch($assignationForm, 'assign')) {
-			$this->eiuCtrl->applyCommonBreadcrumbs(null, $this->dtc->translate('rocket_import_assign_check_breadcrumb'));
-
             $assignationMap = $assignationForm->getAssignationMap();
             $importUpload->setAssignationJson(StringUtils::jsonEncode($assignationMap));
             $scalarEiProperties = $this->eiuCtrl->frame()->getScalarEiProperties();
@@ -113,12 +112,12 @@ class ImportController extends ControllerAdapter {
 	}
 
 	public function doExecute(int $iuId, MessageContainer $mc) {
-		$this->eiuCtrl->applyCommonBreadcrumbs(null, $this->dtc->translate('rocket_import_execute_breadcrumb'));
-
         $importUpload = $this->importDao->getImportUploadById($iuId);
         if ($importUpload === null) {
             throw new PageNotFoundException();
         }
+
+		$this->applyBreadCrumbs(3);
 
 		$this->removeEntriesFromAssignationJsonArr(StringUtils::jsonDecode($importUpload->getStateJson(), true));
 
@@ -160,5 +159,23 @@ class ImportController extends ControllerAdapter {
 				$eiuFrame->remove($eiSelection);
 			}
 		}
+	}
+
+	private function applyBreadCrumbs(int $stepCount) {
+		$this->eiuCtrl->applyCommonBreadcrumbs(null);
+		$bcs = array();
+
+		if ($stepCount > 0) {
+			$bcs[] = new Breadcrumb($this->getUrlToController(array('')), $this->dtc->translate('rocket_import_breadcrumb'));
+		}
+		if ($stepCount > 1) {
+			$bcs[] = new Breadcrumb($this->getUrlToController(array('assign')), $this->dtc->translate('rocket_import_assign_breadcrumb'));
+		}
+
+		if ($stepCount > 2) {
+			$bcs[] = new Breadcrumb($this->getUrlToController(array('execute')), $this->dtc->translate('rocket_import_execute_breadcrumb'));
+		}
+
+		$this->eiuCtrl->applyBreandcrumbs(...$bcs);
 	}
 }
