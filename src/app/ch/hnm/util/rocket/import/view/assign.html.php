@@ -2,57 +2,36 @@
 	use rocket\spec\ei\manage\generic\CommonScalarEiProperty;
 use ch\hnm\util\rocket\import\form\AssignationForm;
 
-	$scalarEiProperties = $view->getParam('scalarEiProperties');
-	$csvPropertyNames = $view->getParam('csvPropertyNames');
-	
 	$assignationForm = $view->getParam('assignationForm');
 	$view->assert($assignationForm instanceof AssignationForm);
 
+	$importUpload = $view->getParam('importUpload');
+	$view->assert($importUpload instanceof \ch\hnm\util\rocket\import\bo\ImportUpload);
+
 	$html->meta()->addJs('import/assignForm.js');
-	$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('Assert')));
+	$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('rocket_import_assign_combine_title')));
+
+    $assignationJson = $importUpload->getAssignationJson();
+	$assignationJsonArr = null;
+
+	if (null !== $assignationJson) {
+		$assignationJsonArr = \n2n\util\StringUtils::jsonDecode($assignationJson, true);
+    }
 ?>
 <?php $formHtml->open($assignationForm) ?>
 
 <div class="rocket-panel">
-	<h3>Assign</h3>
-	
-	<table class="rocket-list">
-		<thead>
-			<tr>
-				<th></th>
-                <?php foreach ($csvPropertyNames as $csvPropName): ?>
-                    <th><?php $html->out($csvPropName) ?></th>
-                <?php endforeach ?>
-			</tr>
-		</thead>
-		<tbody>
-            <?php foreach ($scalarEiProperties as $scalarEiProperty): ?>
-                <?php $scalarEiPropertyFieldPath = $scalarEiProperty->getEiFieldPath() ?>
-                <tr>
-                    <th>
-                        <?php $html->out((string) $scalarEiProperty->getLabelLStr()) ?>
-                    </th>
-                    <?php foreach ($csvPropertyNames as $csvPropName): ?>
-                        <td>
-							<?php if (strpos(strtolower($csvPropName), strtolower((string) $scalarEiProperty->getLabelLStr())) > -1): ?>
-                                <?php $formHtml->inputRadio('assignationMap[' . $csvPropName. ']',
-                                    (string) $scalarEiPropertyFieldPath, array('checked' => 1)) ?>
-                            <?php else: ?>
-								<?php $formHtml->inputRadio('assignationMap[' . $csvPropName. ']',
-									(string) $scalarEiPropertyFieldPath) ?>
-							<?php endif ?>
-                        </td>
-                    <?php endforeach ?>
-                </tr>
-            <?php endforeach ?>
-		</tbody>
-	</table>
+	<h3><?php $html->text('rocket_import_assign_title') ?></h3>
+	<?php $view->import('inc\assignTable.html',
+            array('scalarEiProperties' => $view->getParam('scalarEiProperties'),
+            'csvPropertyNames' => $view->getParam('csvPropertyNames'),
+            'assignationJsonArr' => $assignationJsonArr)) ?>
 </div>
 
 <div id="rocket-page-controls">
     <ul>
         <li>
-			<?php $formHtml->buttonSubmit('assign', 'abschicken') ?>
+			<?php $formHtml->buttonSubmit('assign', $html->getText('rocket_import_confirm_label')) ?>
         </li>
     </ul>
 </div>
