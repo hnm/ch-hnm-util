@@ -62,7 +62,7 @@
 			<?php $html->link($pagination->getPath($request, $numPages),  $numPages, array('class' => 'page-link')) ?>
 		</li>
 	<?php endif?>
-	<li class="page-item<?php $html->out($currentPageNum !== $numPages ? null : ' disabled') ?>">
+	<li class="page-item<?php $html->out($currentPageNum != $numPages ? null : ' disabled') ?>">
 		<?php $html->link($pagination->getPath($request, $currentPageNum + 1), $pagination->getNextLabel(), array('class' => 'page-link', 'tabindex' => $currentPageNum !== $numPages ? null : '-1')) ?>
 	</li>
 </ul>
