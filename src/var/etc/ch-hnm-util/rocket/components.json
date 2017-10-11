@@ -1,0 +1,16 @@
+{
+    "eiPropClasses": [
+        "ch\\hnm\\util\\rocket\\media\\YoutubeEiProp",
+        "ch\\hnm\\util\\rocket\\media\\VimeoEiProp"
+    ],
+    "eiCommandClasses": [
+    ],
+    "eiCommandGroups": {
+    },
+    "eiModificatorClasses": [
+
+    ],
+    "scriptListenerClasses": [
+
+    ]
+}
