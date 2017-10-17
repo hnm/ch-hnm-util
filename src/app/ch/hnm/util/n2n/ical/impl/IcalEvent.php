@@ -1,7 +1,7 @@
 <?php
 namespace ch\hnm\util\n2n\ical\impl;
 
-use he\ui\ical\IcalComponent;
+use ch\hnm\util\n2n\ical\IcalComponent;
 
 class IcalEvent extends IcalComponent {
 	
