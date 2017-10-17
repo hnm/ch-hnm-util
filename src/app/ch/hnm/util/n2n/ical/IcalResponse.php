@@ -4,8 +4,7 @@ namespace ch\hnm\util\n2n\ical;
 use n2n\web\http\BufferedResponseObject;
 use n2n\web\http\Response;
 use n2n\reflection\ArgUtils;
-use he\ui\ical\IcalComponent;
-use he\ui\ical\impl\IcalProperties;
+use ch\hnm\util\n2n\ical\impl\IcalProperties;
 
 class IcalResponse extends BufferedResponseObject {
 	const TYPE_CALENDAR = 'VCALENDAR';

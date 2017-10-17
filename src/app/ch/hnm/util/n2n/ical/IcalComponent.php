@@ -2,6 +2,7 @@
 namespace ch\hnm\util\n2n\ical;
 
 use n2n\web\ui\UiComponent;
+use n2n\web\ui\BuildContext;
 
 abstract class IcalComponent implements UiComponent {
 	const KEY_BEGIN = 'BEGIN';
@@ -18,9 +19,13 @@ abstract class IcalComponent implements UiComponent {
 		return $contents;
 	}
 	
-	public function __toString() {
+	public function build(BuildContext $buildContext): string {
 		return $this->getContents();
 	}
 	
 	public abstract function getProperties();
+	
+	public function __toString() {
+		return $this->getContents();
+	}
 }
