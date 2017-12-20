@@ -25,7 +25,11 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use n2n\web\ui\Raw;
 use n2n\impl\web\dispatch\mag\model\StringMag;
 use n2n\web\dispatch\map\PropertyPath;
-use rocket\spec\ei\manage\mapping\EiEntry;
+use rocket\spec\ei\component\field\impl\string\AlphanumericEiProp;
+use rocket\spec\ei\manage\util\model\Eiu;
+use n2n\web\dispatch\mag\Mag;
+use n2n\web\ui\UiComponent;
+use n2n\web\dispatch\mag\UiOutfitter;
 
 
 class VimeoEiProp extends AlphanumericEiProp {
@@ -33,25 +37,28 @@ class VimeoEiProp extends AlphanumericEiProp {
 	public function getTypeName(): string {
 		return 'Vimeo Video';
 	}
-	/* (non-PHPdoc)
-	 * @see \rocket\spec\ei\component\field\impl\string\AlphanumericEiProp::createOutputUiComponent()
+	
+	/**
+	 * @param HtmlView $view
+	 * @param Eiu $eiu
+	 * @return NULL|\n2n\web\ui\Raw
 	 */
-	public function createOutputUiComponent(
-			HtmlView $view, Eiu $eiu)  {
-				$html = $view->getHtmlBuilder();
-				$eiObject = $eiu->entry()->getEiObject();
-				$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
-				if ($value === null) return null;
-				
-				$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($value)
-				. '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-				return new Raw($raw);
+	public function createOutputUiComponent(HtmlView $view, Eiu $eiu)  {
+		$html = $view->getHtmlBuilder();
+		$eiObject = $eiu->entry()->getEiObject();
+		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
+		
+		if ($value === null) return null;
+		
+		$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($value)
+			. '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+		return new Raw($raw);
 	}
 	/* (non-PHPdoc)
 	 * @see \rocket\spec\ei\component\field\StatelessEditable::createOption()
 	 */
-	public function createMag(string $propertyName, Eiu $eiu): Mag {
-		return new VimeoOption($propertyName, $this->getLabelCode(), null,
+	public function createMag(Eiu $eiu): Mag {
+		return new VimeoOption($this->getLabelCode(), null,
 				$this->isMandatory($eiu), $this->getMaxlength(), null,
 				array('placeholder' => $this->getLabelCode(), 'class' => 'form-control'));
 	}
@@ -59,7 +66,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 
 class VimeoOption extends StringMag {
 	
-	public function createUiField(PropertyPath $propertyPath, HtmlView $view): UiComponent {
+	public function createUiField(PropertyPath $propertyPath, HtmlView $view, UiOutfitter $uo): UiComponent {
 		return new Raw('<span style="display: inline-block; line-height: 16px">http://vimeo.com/' . parent::createUiField($propertyPath, $view) . '</span>');
 	}
 	
