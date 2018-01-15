@@ -8,7 +8,7 @@
             "pluralLabel": "Expl Page Links",
             "fields": {
                 "type": {
-                    "class": "rocket\\spec\\ei\\component\\field\\impl\\enum\\EnumEiProp",
+                    "class": "rocket\\impl\\ei\\component\\prop\\enum\\EnumEiProp",
                     "props": {
                         "displayInOverview": true,
                         "displayInDetailView": true,
@@ -36,7 +36,7 @@
                     "entityProperty": "type"
                 },
                 "linkedPage": {
-                    "class": "rocket\\spec\\ei\\component\\field\\impl\\relation\\ManyToOneSelectEiProp",
+                    "class": "rocket\\impl\\ei\\component\\prop\\relation\\ManyToOneSelectEiProp",
                     "props": {
                         "displayInOverview": true,
                         "displayInDetailView": true,
@@ -53,7 +53,7 @@
                     "entityProperty": "linkedPage"
                 },
                 "url": {
-                    "class": "rocket\\spec\\ei\\component\\field\\impl\\string\\UrlEiProp",
+                    "class": "rocket\\impl\\ei\\component\\prop\\string\\UrlEiProp",
                     "props": {
                         "displayInOverview": true,
                         "displayInDetailView": true,
@@ -73,7 +73,7 @@
                     "entityProperty": "url"
                 },
                 "showExplicit": {
-                    "class": "rocket\\spec\\ei\\component\\field\\impl\\bool\\BooleanEiProp",
+                    "class": "rocket\\impl\\ei\\component\\prop\\bool\\BooleanEiProp",
                     "props": {
                         "displayInOverview": true,
                         "displayInDetailView": true,
@@ -88,7 +88,7 @@
                     "entityProperty": "showExplicit"
                 },
                 "label": {
-                    "class": "rocket\\spec\\ei\\component\\field\\impl\\string\\StringEiProp",
+                    "class": "rocket\\impl\\ei\\component\\prop\\string\\StringEiProp",
                     "props": {
                         "displayInOverview": true,
                         "displayInDetailView": true,
