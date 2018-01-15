@@ -27,7 +27,7 @@ use n2n\impl\web\dispatch\mag\model\StringMag;
 use n2n\impl\web\ui\view\html\HtmlView;
 use rocket\spec\ei\manage\util\model\Eiu;
 use n2n\web\dispatch\mag\Mag;
-use rocket\spec\ei\component\field\impl\string\AlphanumericEiProp;
+use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -48,9 +48,9 @@ class YoutubeEiProp extends AlphanumericEiProp {
 	 * @see \rocket\spec\ei\manage\gui\Editable::createOption()
 	 */
 	public function createMag(Eiu $eiu): Mag {
-		return new StringMag($this->getLabelCode(), null,
-				$this->isMandatory($eiu), $this->getMaxlength(), null,
-				array('placeholder' => $this->getLabelCode(), 'class' => 'form-control'));
+		return new StringMag($this->getLabelLstr(), null,
+				$this->isMandatory($eiu), $this->getMaxlength(), true, null,
+				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
 	}
 }
 

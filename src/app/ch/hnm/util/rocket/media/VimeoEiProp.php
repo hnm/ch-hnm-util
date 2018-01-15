@@ -25,7 +25,7 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use n2n\web\ui\Raw;
 use n2n\impl\web\dispatch\mag\model\StringMag;
 use n2n\web\dispatch\map\PropertyPath;
-use rocket\spec\ei\component\field\impl\string\AlphanumericEiProp;
+use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 use rocket\spec\ei\manage\util\model\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use n2n\web\ui\UiComponent;
@@ -58,9 +58,9 @@ class VimeoEiProp extends AlphanumericEiProp {
 	 * @see \rocket\spec\ei\component\field\StatelessEditable::createOption()
 	 */
 	public function createMag(Eiu $eiu): Mag {
-		return new VimeoOption($this->getLabelCode(), null,
-				$this->isMandatory($eiu), $this->getMaxlength(), null,
-				array('placeholder' => $this->getLabelCode(), 'class' => 'form-control'));
+		return new VimeoOption($this->getLabelLstr(), null,
+				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
+				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
 	}
 }
 
