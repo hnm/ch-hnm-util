@@ -22,7 +22,7 @@
                             "internal": "Internal",
                             "external": "External"
                         },
-                        "associatedGuiFields": {
+                        "associatedGuiProps": {
                             "internal": {
                                 "linkedPage": "linkedPage"
                             },
