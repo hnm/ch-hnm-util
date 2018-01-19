@@ -4,7 +4,7 @@
     "description": "common utils for n2n, rocket and page",
     "keywords": ["cms","cmf","n2n"],
     "homepage": "https://n2n.rocks/",
-    "license": "GNU LGPL",
+    "license": "GPL-3.0-or-later",
     "authors": [
         {
             "name": "Thomas Jansen",
