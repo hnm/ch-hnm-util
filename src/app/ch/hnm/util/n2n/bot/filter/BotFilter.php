@@ -44,7 +44,7 @@ class BotFilter extends ControllerAdapter {
 		imagefill($img, 0, 0, $color);
 		
 		imagepng($img, $tmpFilePath);
-		$this->getResponse()->send(FileFactory::createFromFs($tmpFilePath, BotUtils::HIDDEN_IMAGE_FILE_NAME));
+		$this->sendFile(FileFactory::createFromFs($tmpFilePath, BotUtils::HIDDEN_IMAGE_FILE_NAME));
 		
 		$this->getControllingPlan()->abort();
 	}
