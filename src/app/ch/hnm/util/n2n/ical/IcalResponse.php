@@ -1,12 +1,12 @@
 <?php
 namespace ch\hnm\util\n2n\ical;
 
-use n2n\web\http\BufferedResponseObject;
 use n2n\web\http\Response;
 use n2n\reflection\ArgUtils;
 use ch\hnm\util\n2n\ical\impl\IcalProperties;
+use n2n\web\http\payload\BufferedPayload;
 
-class IcalResponse extends BufferedResponseObject {
+class IcalResponse extends BufferedPayload {
 	const TYPE_CALENDAR = 'VCALENDAR';
 	const KEY_VERSION = 'VERSION';
 	const KEY_PRODID = 'PRODID';
@@ -65,7 +65,7 @@ class IcalResponse extends BufferedResponseObject {
 	/* (non-PHPdoc)
 	 * @see \n2n\web\http\ResponseObject::toKownResponseString()
 	 */
-	public function toKownResponseString(): string {
+	public function toKownPayloadString(): string {
 		return 'Ical Response';
 	}
 }
