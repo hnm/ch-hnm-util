@@ -4,8 +4,8 @@
             "nature": "entity",
             "entity": "ch\\hnm\\util\\page\\bo\\ExplPageLink",
             "dataSourceName": null,
-            "label": "Expl Page Link",
-            "pluralLabel": "Expl Page Links",
+            "label": "Link",
+            "pluralLabel": "Links",
             "iconType": null,
             "fields": {
                 "type": {
