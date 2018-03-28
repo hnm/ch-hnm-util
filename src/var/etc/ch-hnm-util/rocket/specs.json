@@ -20,8 +20,8 @@
                         "mandatory": true,
                         "draftable": false,
                         "options": {
-                            "internal": "Internal",
-                            "external": "External"
+                            "internal": "Intern",
+                            "external": "Extern"
                         },
                         "associatedGuiProps": {
                             "internal": {
