@@ -6,7 +6,7 @@
             "dataSourceName": null,
             "label": "Link",
             "pluralLabel": "Links",
-            "iconType": null,
+            "iconType": "fa fa-link",
             "fields": {
                 "type": {
                     "class": "rocket\\impl\\ei\\component\\prop\\enum\\EnumEiProp",
