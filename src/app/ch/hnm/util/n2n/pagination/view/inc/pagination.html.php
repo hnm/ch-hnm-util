@@ -28,7 +28,8 @@
 <nav aria-label="Page navigation example">
 <ul class="<?php $html->out($pagination->getPaginationClassName()) ?>">
 	<li class="page-item<?php $html->out($currentPageNum > 1 ? null : ' disabled')?>">
-		<?php $html->link($pagination->getPath($request, $currentPageNum - 1), $pagination->getPreviousLabel(), array('class' => 'page-link', 'tabindex' => $currentPageNum > 1 ? null : '-1')) ?>
+		<?php $html->link($pagination->getPath($request, ($currentPageNum > 1) ? $currentPageNum - 1 : 1), 
+		    $pagination->getPreviousLabel(), array('class' => 'page-link', 'tabindex' => $currentPageNum > 1 ? null : '-1')) ?>
 	</li>
 	<?php if ($pagination->showFirst() && ($firstPageNum > 1)) : ?>
 		<li class="page-item">
