@@ -47,7 +47,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 	 */
 	public function createMag(Eiu $eiu): Mag {
 		return new StringMag($this->getLabelLstr(), null,
-				$this->isMandatory($eiu), $this->getMaxlength(), true, null,
+				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
 				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
 	}
 }
