@@ -47,7 +47,7 @@
                         "readOnly": false,
                         "mandatory": true,
                         "draftable": false,
-                        "targetRemovalStrategy": "prevent"
+                        "targetRemovalStrategy": "selfRemove"
                     },
                     "label": "Linked Page",
                     "objectProperty": "linkedPage",
