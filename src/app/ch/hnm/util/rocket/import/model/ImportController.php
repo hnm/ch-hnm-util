@@ -1,10 +1,9 @@
 <?php
 namespace ch\hnm\util\rocket\import\model;
 
-use n2n\io\IoUtils;
 use n2n\util\StringUtils;
 use rocket\core\model\Breadcrumb;
-use rocket\spec\ei\manage\util\model\EiuCtrl;
+use rocket\ei\util\EiuCtrl;
 use ch\hnm\util\rocket\import\form\ImportForm;
 use n2n\l10n\DynamicTextCollection;
 use n2n\persistence\orm\EntityManager;
@@ -17,7 +16,7 @@ use n2n\io\managed\impl\TmpFileManager;
 use n2n\web\http\Session;
 use n2n\web\http\controller\ParamGet;
 use n2n\web\http\PageNotFoundException;
-use rocket\spec\ei\manage\util\model\UnknownEntryException;
+use n2n\persistence\orm\util\UnknownEntryException;
 
 class ImportController extends ControllerAdapter {
 	private $dtc;

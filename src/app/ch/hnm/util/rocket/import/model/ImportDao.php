@@ -4,7 +4,6 @@ namespace ch\hnm\util\rocket\import\model;
 use ch\hnm\util\rocket\import\bo\ImportUpload;
 use n2n\context\RequestScoped;
 use n2n\persistence\orm\EntityManager;
-use n2n\io\managed\File;
 
 class ImportDao implements RequestScoped {
 	/**
