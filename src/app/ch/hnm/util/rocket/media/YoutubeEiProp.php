@@ -24,7 +24,7 @@ namespace ch\hnm\util\rocket\media;
 use n2n\web\ui\Raw;
 use n2n\impl\web\dispatch\mag\model\StringMag;
 use n2n\impl\web\ui\view\html\HtmlView;
-use rocket\ei\util\model\Eiu;
+use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 

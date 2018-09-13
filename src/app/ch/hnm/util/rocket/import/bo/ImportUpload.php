@@ -10,7 +10,7 @@ use n2n\io\managed\File;
 use n2n\persistence\orm\annotation\AnnoDateTime;
 use n2n\util\StringUtils;
 use n2n\web\http\PageNotFoundException;
-use rocket\spec\ei\manage\util\model\EiuFrame;
+use rocket\ei\util\frame\EiuFrame;
 
 class ImportUpload extends ObjectAdapter {
 	private static function _annos(AnnoInit $ai) {

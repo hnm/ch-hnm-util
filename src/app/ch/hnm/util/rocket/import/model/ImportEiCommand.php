@@ -5,12 +5,12 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use n2n\l10n\DynamicTextCollection;
 use n2n\l10n\N2nLocale;
 use n2n\web\http\controller\Controller;
-use rocket\spec\ei\component\command\control\OverallControlComponent;
-use rocket\spec\ei\component\command\impl\IndependentEiCommandAdapter;
-use rocket\spec\ei\manage\control\ControlButton;
-use rocket\spec\ei\manage\control\IconType;
-use rocket\spec\ei\manage\util\model\Eiu;
-use rocket\spec\ei\manage\control\HrefControl;
+use rocket\ei\component\command\control\OverallControlComponent;
+use rocket\impl\ei\component\command\IndependentEiCommandAdapter;
+use rocket\ei\manage\control\ControlButton;
+use rocket\ei\manage\control\IconType;
+use rocket\ei\util\Eiu;
+use rocket\ei\manage\control\HrefControl;
 
 class ImportEiCommand extends IndependentEiCommandAdapter implements OverallControlComponent {
 	const ID_BASE = 'import';
@@ -35,7 +35,7 @@ class ImportEiCommand extends IndependentEiCommandAdapter implements OverallCont
 		return array(self::CONTROL_IMPORT_KEY => $dtc->translate('common_import_label'));
 	}
 
-	public function createOverallHrefControls(Eiu $eiu, HtmlView $htmlView) {
+	public function createOverallControls(Eiu $eiu, HtmlView $htmlView): array {
 		$n2nContext = $eiu->frame()->getN2nContext();
 		$eiUtils = $eiu->frame();
 		$eiFrame = $eiUtils->getEiFrame();

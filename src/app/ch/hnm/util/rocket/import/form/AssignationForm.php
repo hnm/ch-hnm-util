@@ -1,7 +1,6 @@
 <?php 
 namespace ch\hnm\util\rocket\import\form;
 
-use n2n\reflection\annotation\AnnoInit;
 use n2n\web\dispatch\Dispatchable;
 
 class AssignationForm implements Dispatchable {

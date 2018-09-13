@@ -9,7 +9,6 @@ use n2n\web\ui\ViewFactory;
 use n2n\core\VarStore;
 use n2n\io\IoUtils;
 use n2n\web\http\Response;
-use n2n\web\dispatch\map\bind\BindingErrors;
 use n2n\impl\web\dispatch\map\val\ValEnum;
 use n2n\l10n\MessageContainer;
 use n2n\l10n\DynamicTextCollection;
