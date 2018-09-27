@@ -1,6 +1,4 @@
 <?php
-use rocket\spec\ei\manage\generic\CommonScalarEiProperty;
-
 $assignationMap = $view->getParam('assignationMap');
 $scalarEiProperties = $view->getParam('scalarEiProperties');
 $uploadedArr = $view->getParam('uploadedArr');

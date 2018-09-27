@@ -1,6 +1,5 @@
 <?php 
-	use rocket\spec\ei\manage\generic\CommonScalarEiProperty;
-use ch\hnm\util\rocket\import\form\AssignationForm;
+	use ch\hnm\util\rocket\import\form\AssignationForm;
 
 	$assignationForm = $view->getParam('assignationForm');
 	$view->assert($assignationForm instanceof AssignationForm);
