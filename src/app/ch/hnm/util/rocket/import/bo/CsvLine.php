@@ -1,6 +1,8 @@
 <?php
 namespace ch\hnm\util\rocket\import\bo;
 
+use ch\hnm\util\rocket\import\model\CsvException;
+
 class CsvLine {
 	private $entityIdRep;
 	private $values;
