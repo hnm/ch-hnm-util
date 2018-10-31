@@ -1,10 +1,15 @@
 <?php
-$assignationMap = $view->getParam('assignationMap');
-$scalarEiProperties = $view->getParam('scalarEiProperties');
-$uploadedArr = $view->getParam('uploadedArr');
-$csvLines = $view->getParam('csvLines');
-
-$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('rocket_import_check_title')));
+	use n2n\impl\web\ui\view\html\HtmlView;
+	
+	$view = HtmlView::view($view);
+	$html = HtmlView::html($view);
+	
+	$assignationMap = $view->getParam('assignationMap');
+	$scalarEiProperties = $view->getParam('scalarEiProperties');
+	$uploadedArr = $view->getParam('uploadedArr');
+	$csvLines = $view->getParam('csvLines');
+	
+	$view->useTemplate('\rocket\core\view\template.html', array('title' => $view->getL10nText('rocket_import_check_title')));
 ?>
 <div class="rocket-panel">
     <h3><?php $html->text('rocket_import_check_assign_title')?></h3>

@@ -1,4 +1,10 @@
 <?php
+	use n2n\impl\web\ui\view\html\HtmlView;
+	
+	$view = HtmlView::view($view);
+	$html = HtmlView::html($view);
+	$formHtml = HtmlView::formHtml($view);
+	
 	$scalarEiProperties = $view->getParam('scalarEiProperties');
 	$csvPropertyNames = $view->getParam('csvPropertyNames');
 	$assignationJsonArr = $view->getParam('assignationJsonArr');

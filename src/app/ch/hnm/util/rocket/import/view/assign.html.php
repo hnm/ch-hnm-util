@@ -1,6 +1,12 @@
 <?php 
 	use ch\hnm\util\rocket\import\form\AssignationForm;
 
+	use n2n\impl\web\ui\view\html\HtmlView;
+	
+	$view = HtmlView::view($view);
+	$html = HtmlView::html($view);
+	$formHtml = HtmlView::formHtml($view);
+	
 	$assignationForm = $view->getParam('assignationForm');
 	$view->assert($assignationForm instanceof AssignationForm);
 
