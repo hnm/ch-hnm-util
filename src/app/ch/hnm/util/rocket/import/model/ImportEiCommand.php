@@ -16,7 +16,7 @@ class ImportEiCommand extends IndependentEiCommandAdapter implements OverallCont
 	const ID_BASE = 'import';
 	const CONTROL_IMPORT_KEY = 'import';
 
-	public function getIdBase() {
+	public function getIdBase(): ?string {
 		return self::ID_BASE;
 	}
 
