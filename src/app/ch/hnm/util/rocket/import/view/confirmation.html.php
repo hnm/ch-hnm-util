@@ -1,4 +1,9 @@
 <?php
+	use n2n\impl\web\ui\view\html\HtmlView;
+	
+	$view = HtmlView::view($view);
+	$html = HtmlView::html($view);	
+
 	$messageContainer = $view->getParam('messageContainer');
 	$view->assert($messageContainer instanceof \n2n\l10n\MessageContainer);
 

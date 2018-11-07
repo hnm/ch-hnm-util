@@ -1,4 +1,10 @@
 <?php
+	use n2n\impl\web\ui\view\html\HtmlView;
+	
+	$view = HtmlView::view($view);
+	$html = HtmlView::html($view);
+	$formHtml = HtmlView::formHtml($view);
+	
 	$importForm = $view->getParam('importForm');
     $view->assert($importForm instanceof \ch\hnm\util\rocket\import\form\ImportForm);
 
