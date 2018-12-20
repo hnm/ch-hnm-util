@@ -43,7 +43,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	 * @param Eiu $eiu
 	 * @return NULL|\n2n\web\ui\Raw
 	 */
-	public function createOutputUiComponent(HtmlView $view, Eiu $eiu)  {
+	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
 		$html = $view->getHtmlBuilder();
 		$eiObject = $eiu->entry()->object()->getEiObject();
 		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
@@ -55,7 +55,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 		return new Raw($raw);
 	}
 	/* (non-PHPdoc)
-	 * @see \rocket\spec\ei\component\field\StatelessEditable::createOption()
+	 * @see \rocket\spec\ei\component\field\StatelessGuiFieldEditable::createOption()
 	 */
 	public function createMag(Eiu $eiu): Mag {
 		return new VimeoOption($this->getLabelLstr(), null,
