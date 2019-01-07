@@ -34,7 +34,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		return 'Youtube Video';
 	}
 	
-	public function createOutputUiComponent(HtmlView $view, Eiu $eiu)  {
+	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
 		$value = $eiu->entry()->getValue($this->getId());
 		if ($value === null) return null;
 		
