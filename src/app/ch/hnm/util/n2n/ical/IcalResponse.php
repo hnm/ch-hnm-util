@@ -2,7 +2,7 @@
 namespace ch\hnm\util\n2n\ical;
 
 use n2n\web\http\Response;
-use n2n\reflection\ArgUtils;
+use n2n\util\type\ArgUtils;
 use ch\hnm\util\n2n\ical\impl\IcalProperties;
 use n2n\web\http\payload\BufferedPayload;
 
