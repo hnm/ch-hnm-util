@@ -81,7 +81,7 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 	
 	public function getModuleNamespaceOptions() {
 		$moduleNamespaces = array();
-		$defaultN2nLocale = N2nLocale::getDefault();
+// 		$defaultN2nLocale = N2nLocale::getDefault();
 		
 		foreach ($this->moduleManager->getModules() as $module) {
 			if (in_array($module->getNamespace(), array('n2n', 'rocket', 'page'))) continue;

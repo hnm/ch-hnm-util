@@ -95,7 +95,7 @@ class ImportController extends ControllerAdapter {
             $scalarEiProperties = $this->eiuCtrl->frame()->getScalarEiProperties();
             $this->forward('..\view\assignCheck.html', array('assignationMap' => $assignationMap,
                     'iuId' => $iuId, 'scalarEiProperties' => $scalarEiProperties,
-					'csvLines' => $csvLines = $csv->getCsvLines(),
+					'csvLines' => /*$csvLines = */$csv->getCsvLines(),
 					'uploadedArr' => $this->buildUploadedArr($importUpload)));
             return;
         }

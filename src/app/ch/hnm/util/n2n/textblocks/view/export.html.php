@@ -1,6 +1,5 @@
 <?php
 	use ch\hnm\util\n2n\textblocks\model\TextBlockExportForm;
-	use n2nutil\bootstrap\ui\BsFormHtmlBuilder;
 	use n2n\impl\web\ui\view\html\HtmlView;
 	use n2n\l10n\Message;
 	
@@ -13,7 +12,7 @@
 	
 	$view->useTemplate('\bstmpl\view\bsTemplate.html', array('title' => 'Textblocks'));
 	
-	$bootstrapFormHtml = new BsFormHtmlBuilder($view);
+// 	$bootstrapFormHtml = new BsFormHtmlBuilder($view);
 ?>
 <?php $html->messageList(null, Message::SEVERITY_INFO, array('class' => 'alert alert-info list-unstyled')) ?>
 <?php $formHtml->open($textBlockExportForm, null, null, array('class' => 'form-horizontal')) ?>
