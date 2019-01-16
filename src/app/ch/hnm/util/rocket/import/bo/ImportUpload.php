@@ -11,7 +11,7 @@ use n2n\persistence\orm\annotation\AnnoDateTime;
 use n2n\util\StringUtils;
 use n2n\web\http\PageNotFoundException;
 use rocket\ei\util\frame\EiuFrame;
-use n2n\reflection\property\ValueIncompatibleWithConstraintsException;
+use n2n\util\type\ValueIncompatibleWithConstraintsException;
 
 class ImportUpload extends ObjectAdapter {
 	private static function _annos(AnnoInit $ai) {
