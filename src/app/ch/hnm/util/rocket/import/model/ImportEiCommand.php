@@ -41,7 +41,7 @@ class ImportEiCommand extends IndependentEiCommandAdapter implements OverallCont
 		$eiFrame = $eiUtils->getEiFrame();
 		$httpContext = $n2nContext->getHttpContext();
 		$dtc = new DynamicTextCollection('rocket', $n2nContext->getN2nLocale());
-		$controllerContextPath = $httpContext->getControllerContextPath($eiUtils->getEiFrame()->getControllerContext());
+// 		$controllerContextPath = $httpContext->getControllerContextPath($eiUtils->getEiFrame()->getControllerContext());
 
 		$name = $dtc->translate('import_label');
 		$tooltip = $dtc->translate('import_tooltip', array('type' => $eiUtils->getGenericLabel()));
