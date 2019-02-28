@@ -39,7 +39,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		if ($value === null) return null;
 		
 		$html = $view->getHtmlBuilder();
-		$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="http://www.youtube.com/embed/' . $html->getEsc($value) . '"></iframe>';
+		$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc(urlencode($value)) . '"></iframe>';
 		return new Raw($raw);
 	}
 	/* (non-PHPdoc)
