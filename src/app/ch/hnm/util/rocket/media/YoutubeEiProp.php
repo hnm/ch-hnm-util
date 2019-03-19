@@ -27,6 +27,7 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
+use n2n\impl\web\ui\view\html\Link;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -34,9 +35,24 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		return 'Youtube Video';
 	}
 	
+	public function saveMagValue(Mag $option, Eiu $eiu) {
+		$eiu->field()->setValue($option->getValue());
+	}
+	
 	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
+		$html = $view->getHtmlBuilder();
 		$value = $eiu->entry()->getValue($this);
 		if ($value === null) return null;
+		if ($eiu->gui()->isCompact()) {
+			$meta = $html->meta();
+			$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
+			$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
+			$meta->addJs('impl/js/image-preview.js');
+			
+			$videoUrl = 'https://www.youtube.com/watch?v=' . $html->getEsc(urlencode($value));
+			
+			return new Link($videoUrl , null, ['class' => 'rocket-video-previewable']);
+		}
 		
 		$html = $view->getHtmlBuilder();
 		$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc(urlencode($value)) . '"></iframe>';
