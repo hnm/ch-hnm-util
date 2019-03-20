@@ -51,7 +51,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 			
 			$videoUrl = 'https://www.youtube.com/watch?v=' . $html->getEsc(urlencode($value));
 			
-			return new Link($videoUrl , null, ['class' => 'rocket-video-previewable']);
+			return new Link($videoUrl , $videoUrl, ['class' => 'rocket-video-previewable']);
 		}
 		
 		$html = $view->getHtmlBuilder();
