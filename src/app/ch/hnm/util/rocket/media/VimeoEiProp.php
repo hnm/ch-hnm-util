@@ -30,7 +30,6 @@ use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use n2n\web\ui\UiComponent;
 use n2n\web\dispatch\mag\UiOutfitter;
-use n2n\impl\web\ui\view\html\Link;
 
 
 class VimeoEiProp extends AlphanumericEiProp {
