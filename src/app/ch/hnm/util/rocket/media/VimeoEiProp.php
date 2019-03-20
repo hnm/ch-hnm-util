@@ -30,6 +30,7 @@ use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use n2n\web\ui\UiComponent;
 use n2n\web\dispatch\mag\UiOutfitter;
+use n2n\impl\web\ui\view\html\Link;
 
 
 class VimeoEiProp extends AlphanumericEiProp {
@@ -49,8 +50,19 @@ class VimeoEiProp extends AlphanumericEiProp {
 		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
 		
 		if ($value === null) return null;
+		$urlEncodedValue = urlencode($value);
+		if ($eiu->gui()->isCompact()) {
+			$meta = $html->meta();
+			$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
+			$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
+			$meta->addJs('impl/js/image-preview.js');
+			
+			$videoUrl = 'https://vimeo.com/' . $html->getEsc($urlEncodedValue);
+			
+			return new Link($videoUrl , $videoUrl, ['class' => 'rocket-video-previewable']);
+		}
 		
-		$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($value)
+		$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($urlEncodedValue)
 			. '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 		return new Raw($raw);
 	}

@@ -43,19 +43,19 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		$html = $view->getHtmlBuilder();
 		$value = $eiu->entry()->getValue($this);
 		if ($value === null) return null;
+		$urlEncodedValue = urlencode($value);
 		if ($eiu->gui()->isCompact()) {
 			$meta = $html->meta();
 			$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
 			$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
 			$meta->addJs('impl/js/image-preview.js');
 			
-			$videoUrl = 'https://www.youtube.com/watch?v=' . $html->getEsc(urlencode($value));
+			$videoUrl = 'https://www.youtube.com/watch?v=' . $html->getEsc($urlEncodedValue);
 			
 			return new Link($videoUrl , $videoUrl, ['class' => 'rocket-video-previewable']);
 		}
 		
-		$html = $view->getHtmlBuilder();
-		$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc(urlencode($value)) . '"></iframe>';
+		$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
 		return new Raw($raw);
 	}
 	/* (non-PHPdoc)
