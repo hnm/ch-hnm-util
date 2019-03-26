@@ -34,13 +34,29 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		return 'Youtube Video';
 	}
 	
+	public function saveMagValue(Mag $option, Eiu $eiu) {
+		$eiu->field()->setValue($option->getValue());
+	}
+	
 	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
+		$html = $view->getHtmlBuilder();
 		$value = $eiu->entry()->getValue($this);
 		if ($value === null) return null;
+		$urlEncodedValue = urlencode($value);
+		if (!$eiu->gui()->isCompact()) {
+			$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
+			return new Raw($raw);
+		}
 		
-		$html = $view->getHtmlBuilder();
-		$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc(urlencode($value)) . '"></iframe>';
-		return new Raw($raw);
+		$meta = $html->meta();
+		$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
+		$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
+		$meta->addJs('impl/js/image-preview.js');
+		
+		$videoUrl = 'https://www.youtube.com/watch?v=' . $urlEncodedValue;
+		
+		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl), 
+				['class' => 'rocket-video-previewable', 'target' => '_blank']);
 	}
 	/* (non-PHPdoc)
 	 * @see \rocket\spec\ei\manage\gui\Editable::createOption()

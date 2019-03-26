@@ -49,10 +49,22 @@ class VimeoEiProp extends AlphanumericEiProp {
 		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
 		
 		if ($value === null) return null;
+		$urlEncodedValue = urlencode($value);
+		if (!$eiu->gui()->isCompact()) {
+			$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($urlEncodedValue)
+				. '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+			return new Raw($raw);
+		}
+		$meta = $html->meta();
+		$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
+		$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
+		$meta->addJs('impl/js/image-preview.js');
 		
-		$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($value)
-			. '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-		return new Raw($raw);
+		$videoUrl = 'https://vimeo.com/' . $html->getEsc($urlEncodedValue);
+		
+		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl),
+				['class' => 'rocket-video-previewable', 'target' => '_blank']);
+		
 	}
 	/* (non-PHPdoc)
 	 * @see \rocket\spec\ei\component\field\StatelessGuiFieldEditable::createOption()
