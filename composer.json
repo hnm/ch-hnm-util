@@ -1,23 +1,27 @@
 {
-    "name": "hnm/ch-hnm-util",
-    "type": "n2n-module",
-    "description": "common utils for n2n, rocket and page",
-    "keywords": ["cms","cmf","n2n"],
-    "homepage": "https://n2n.rocks/",
-    "license": "GPL-3.0-or-later",
     "authors": [
         {
-            "name": "Thomas Jansen",
-            "email": "jansen@hnm.ch"
+            "email": "jansen@hnm.ch",
+            "name": "Thomas Jansen"
         }
     ],
-    "require": {
-        "php": ">=7.0",
-        "n2n/n2n-composer-module-installer": "7.1.x-dev"
-    },
     "autoload": {
         "psr-4": {
             "ch\\hnm\\util\\": "src/app/ch/hnm/util"
         }
-    }
+    },
+    "description": "common utils for n2n, rocket and page",
+    "homepage": "https://n2n.rocks/",
+    "keywords": [
+        "cms",
+        "cmf",
+        "n2n"
+    ],
+    "license": "GPL-3.0-or-later",
+    "name": "hnm/ch-hnm-util",
+    "require": {
+        "n2n/n2n-composer-module-installer": "~7.1.1",
+        "php": ">=7.0"
+    },
+    "type": "n2n-module"
 }
