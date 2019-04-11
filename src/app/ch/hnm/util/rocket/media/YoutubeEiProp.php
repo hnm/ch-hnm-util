@@ -27,6 +27,7 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
+use rocket\si\content\SiField;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -34,11 +35,11 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		return 'Youtube Video';
 	}
 	
-	public function saveMagValue(Mag $option, Eiu $eiu) {
+	public function saveSiField(SiField $siField, Eiu $eiu) {
 		$eiu->field()->setValue($option->getValue());
 	}
 	
-	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
+	public function createOutSiField(Eiu $eiu): SiField  {
 		$html = $view->getHtmlBuilder();
 		$value = $eiu->entry()->getValue($this);
 		if ($value === null) return null;
@@ -61,7 +62,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 	/* (non-PHPdoc)
 	 * @see \rocket\spec\ei\manage\gui\Editable::createOption()
 	 */
-	public function createMag(Eiu $eiu): Mag {
+	public function createInSiField(Eiu $eiu): SiField {
 		return new StringMag($this->getLabelLstr(), null,
 				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
 				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));

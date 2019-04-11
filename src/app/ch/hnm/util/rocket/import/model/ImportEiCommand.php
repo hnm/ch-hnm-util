@@ -7,8 +7,8 @@ use n2n\l10n\N2nLocale;
 use n2n\web\http\controller\Controller;
 use rocket\ei\component\command\control\OverallControlComponent;
 use rocket\impl\ei\component\command\IndependentEiCommandAdapter;
-use rocket\ei\manage\control\ControlButton;
-use rocket\ei\manage\control\IconType;
+use rocket\si\control\SiButton;
+use rocket\si\control\SiIconType;
 use rocket\ei\util\Eiu;
 use rocket\ei\manage\control\HrefControl;
 
@@ -47,6 +47,6 @@ class ImportEiCommand extends IndependentEiCommandAdapter implements OverallCont
 		$tooltip = $dtc->translate('import_tooltip', array('type' => $eiUtils->getGenericLabel()));
 
 		return array(self::CONTROL_IMPORT_KEY => HrefControl::create($eiFrame, $this, null,
-				new ControlButton($name, $tooltip, true, ControlButton::TYPE_SUCCESS, IconType::ICON_PLUS_CIRCLE)));
+				new SiButton($name, $tooltip, true, SiButton::TYPE_SUCCESS, SiIconType::ICON_PLUS_CIRCLE)));
 	}
 }

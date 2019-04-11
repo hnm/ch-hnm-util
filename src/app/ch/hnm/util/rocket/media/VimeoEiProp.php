@@ -30,6 +30,7 @@ use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use n2n\web\ui\UiComponent;
 use n2n\web\dispatch\mag\UiOutfitter;
+use rocket\si\content\SiField;
 
 
 class VimeoEiProp extends AlphanumericEiProp {
@@ -43,7 +44,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	 * @param Eiu $eiu
 	 * @return NULL|\n2n\web\ui\Raw
 	 */
-	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
+	public function createOutSiField(Eiu $eiu): SiField  {
 		$html = $view->getHtmlBuilder();
 		$eiObject = $eiu->entry()->object()->getEiObject();
 		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
@@ -69,7 +70,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	/* (non-PHPdoc)
 	 * @see \rocket\spec\ei\component\field\StatelessGuiFieldEditable::createOption()
 	 */
-	public function createMag(Eiu $eiu): Mag {
+	public function createInSiField(Eiu $eiu): SiField {
 		return new VimeoOption($this->getLabelLstr(), null,
 				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
 				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
