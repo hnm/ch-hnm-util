@@ -5,14 +5,12 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use n2n\l10n\DynamicTextCollection;
 use n2n\l10n\N2nLocale;
 use n2n\web\http\controller\Controller;
-use rocket\ei\component\command\control\OverallControlComponent;
 use rocket\impl\ei\component\command\IndependentEiCommandAdapter;
 use rocket\si\control\SiButton;
 use rocket\si\control\SiIconType;
 use rocket\ei\util\Eiu;
-use rocket\ei\manage\control\HrefControl;
 
-class ImportEiCommand extends IndependentEiCommandAdapter implements OverallControlComponent {
+class ImportEiCommand extends IndependentEiCommandAdapter {
 	const ID_BASE = 'import';
 	const CONTROL_IMPORT_KEY = 'import';
 
