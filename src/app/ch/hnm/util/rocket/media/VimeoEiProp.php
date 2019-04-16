@@ -46,7 +46,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
 		$html = $view->getHtmlBuilder();
 		$eiObject = $eiu->entry()->object()->getEiObject();
-		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
+		$value = $this->getObjectPropertyAccessProxy()->getValue($eiObject->getEiEntityObj()->getEntityObj());
 		
 		if ($value === null) return null;
 		$urlEncodedValue = urlencode($value);
