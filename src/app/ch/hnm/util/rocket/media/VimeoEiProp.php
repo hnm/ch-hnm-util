@@ -47,7 +47,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	public function createOutSiField(Eiu $eiu): SiField  {
 		$html = $view->getHtmlBuilder();
 		$eiObject = $eiu->entry()->object()->getEiObject();
-		$value = $this->getPropertyAccessProxy()->getValue($eiObject->getCurrentEntity());
+		$value = $this->getObjectPropertyAccessProxy()->getValue($eiObject->getEiEntityObj()->getEntityObj());
 		
 		if ($value === null) return null;
 		$urlEncodedValue = urlencode($value);
@@ -80,7 +80,8 @@ class VimeoEiProp extends AlphanumericEiProp {
 class VimeoOption extends StringMag {
 	
 	public function createUiField(PropertyPath $propertyPath, HtmlView $view, UiOutfitter $uo): UiComponent {
-		return new Raw('<span style="display: inline-block; line-height: 16px">http://vimeo.com/' . parent::createUiField($propertyPath, $view) . '</span>');
+		return new Raw('<span style="display: inline-block; line-height: 16px">http://vimeo.com/' 
+				. parent::createUiField($propertyPath, $view, $uo) . '</span>');
 	}
 	
 }
