@@ -1,0 +1,23 @@
+{
+    "name": "hnm/ch-hnm-util",
+    "type": "n2n-module",
+    "description": "common utils for n2n, rocket and page",
+    "keywords": ["cms","cmf","n2n"],
+    "homepage": "https://n2n.rocks/",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Thomas Günther",
+            "email": "guenther@hnm.ch"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "n2n/n2n-composer-module-installer": "dev-master",
+        "n2n/page": "dev-master"
+    },
+	"require-dev" : {
+		"n2n/hangar" : "dev-master"
+	}
+}
