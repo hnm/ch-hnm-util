@@ -5,6 +5,7 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use ch\hnm\util\n2n\bot\model\BotModel;
 use n2n\impl\web\ui\view\html\HtmlElement;
 use ch\hnm\util\n2n\bot\model\BotUtils;
+use n2n\impl\web\ui\view\html\HtmlUtils;
 
 class BotHtmlBuilder {
 	private $view;
@@ -22,14 +23,14 @@ class BotHtmlBuilder {
 		$this->botModel = $view->lookup('ch\hnm\util\n2n\bot\model\BotModel');
 	}
 	
-	public function getHiddenImage() {
+	public function getHiddenImage(array $attrs = null) {
 		$this->botModel->setCheckImage(true);
 		$this->botModel->addDispatchClassName($this->formHtml->meta()->getForm()->getDispatchTarget()->getDispatchClassName());
-		return new HtmlElement('img', 
-				array('src' => BotUtils::buildHiddenImageUrl($this->view->getN2nContext())));
+		return new HtmlElement('img', HtmlUtils::mergeAttrs(
+				['src' => BotUtils::buildHiddenImageUrl($this->view->getN2nContext())], $attrs));
 	}
 	
-	public function hiddenImage() {
-		$this->view->out($this->getHiddenImage());
+	public function hiddenImage(array $attrs = null) {
+		$this->view->out($this->getHiddenImage($attrs));
 	}
 }

@@ -1,3 +1,3 @@
 eclipse.preferences.version=1
-include_path=
+include_path=0;/ch-hnm-util/src/vendor\u00050;/ch-hnm-util/src\u00050;/ch-hnm-util/src/app
 use_asp_tags_as_php=false
