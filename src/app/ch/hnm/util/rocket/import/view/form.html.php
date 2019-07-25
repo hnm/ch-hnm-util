@@ -21,7 +21,7 @@
 	<div class="rocket-properties">
 		<div class="rocket-block rocket-editable rocket-required">
 			<?php $formHtml->label('file') ?>
-			<div class="rocket-controls">
+			<div class="rocket-structure-contents">
 				<?php $formHtml->inputFile('file') ?>
 			</div>
 		</div>
@@ -41,14 +41,14 @@
                         <li>
                             <?php $html->linkToController(array('assign', $importUpload->getId()),
 								new n2n\web\ui\Raw('<i class="fa fa-pencil"></i> <span>editieren</span>'),
-								array('class' => 'rocket-control rocket-important')) ?>
+								array('class' => 'rocket-structure-content rocket-important')) ?>
                         </li>
 
 						<?php if ($importUpload->determineState() === \ch\hnm\util\rocket\import\bo\ImportUpload::STATE_FINISHED): ?>
                             <li>
 								<?php $html->linkToController(array('removeentries', $importUpload->getId()),
 									new n2n\web\ui\Raw('<i class="fa fa-user-times"></i> <span>Einträge in der DB löschen</span>'),
-									array('class' => 'rocket-control rocket-important',
+									array('class' => 'rocket-structure-content rocket-important',
 										'data-rocket-confirm-msg'=> $html->getText('rocket_import_sure_delete_entities_question'),
 										'data-rocket-confirm-ok-label' => $html->getText('rocket_import_yes_label'),
                                         'data-rocket-confirm-cancel-label' => $html->getText('rocket_import_no_label'))) ?>
@@ -58,7 +58,7 @@
                         <li>
 							<?php $html->linkToController(array('reset', $importUpload->getId()),
 								new n2n\web\ui\Raw('<i class="fa fa-refresh"></i> <span>Reset</span>'),
-								array('class' => 'rocket-control rocket-important',
+								array('class' => 'rocket-structure-content rocket-important',
 									'data-rocket-confirm-msg' => $html->getText('rocket_import_sure_reset_import_upload_question'),
 									'data-rocket-confirm-ok-label' => $html->getText('rocket_import_yes_label') ,
 									'data-rocket-confirm-cancel-label'=> $html->getText('rocket_import_no_label'))) ?>
@@ -67,7 +67,7 @@
                         <li>
 							<?php $html->linkToController(array('delete', $importUpload->getId()),
 								new n2n\web\ui\Raw('<i class="fa fa-times"></i> <span>Löschen</span>'),
-								array('class' => 'rocket-control rocket-important',
+								array('class' => 'rocket-structure-content rocket-important',
 									'data-rocket-confirm-msg' => $html->getText('rocket_import_sure_delete_import_upload_question'),
 									'data-rocket-confirm-ok-label' => $html->getText('rocket_import_yes_label') ,
                                     'data-rocket-confirm-cancel-label'=> $html->getText('rocket_import_no_label'))) ?>
@@ -84,7 +84,7 @@
         <li>
 			<?php $formHtml->buttonSubmit(null,
 				new \n2n\web\ui\Raw('<i class="fa fa-cloud-upload"></i> ' . $html->getL10nText('rocket_import_upload_start_label')),
-				array('class' => 'rocket-control-success rocket-important')) ?>
+				array('class' => 'rocket-structure-content-success rocket-important')) ?>
         </li>
     </ul>
 </div>
