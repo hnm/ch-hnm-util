@@ -55,28 +55,73 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 	
 	public function export(Response $response, MessageContainer $mc) {
 		$defaultN2nLocale = N2nLocale::getDefault();
-		foreach ($this->selectedModuleNamespaces as $selectedModuleNamespace) {
-			foreach ($this->selectedLocaleIds as $localeId) {
+		$spreadSheet = new Spreadsheet();
+		$spreadSheet->setActiveSheetIndex(0)->fromArray($data, null, 'A1', true);
+		$writer = IOFactory::createWriter($spreadSheet, 'Xlsx');
+		$tmpPath = tempnam(sys_get_temp_dir(), 'event');
+		$tmpFilePath = new FsPath(tempnam(sys_get_temp_dir(), 'event'));
+		$writer->save((string) $tmpFilePath);
+		return new CommonFile(new FsFileSource($tmpFilePath), $fileName);
+		
+		$data = [$defaultN2nLocale => []];
+		foreach ($this->selectedLocaleIds as $localeId) {
+			$data[$localeId] = [];
+			foreach ($this->selectedModuleNamespaces as $selectedModuleNamespace) {
 				if (null === ($iniFilePath = $this->determineIniFilePath($selectedModuleNamespace, $defaultN2nLocale))) continue;
-				$fileFsPath = $this->n2nContext->getVarStore()->requestFileFsPath(VarStore::CATEGORY_TMP, 
-						'tmpl', 'textblocks', str_replace('\\', '.', $selectedModuleNamespace) . '-' . $localeId .  '.csv', true, true);
 				
-				$localeIniFilePath = null;
-				try {
-					$localeIniFilePath = $this->determineIniFilePath($selectedModuleNamespace, $localeId);
-				} catch (TypeNotFoundException $e) {}
+				$defaultIniData = [];
+				if (!isset($data[$defaultN2nLocale][$selectedModuleNamespace])) {
+					$defaultIniData = IoUtils::parseIniFile($path);
+					$data[$defaultN2nLocale][$selectedModuleNamespace] = $defaultIniData;
+				} else {
+					$defaultIniData = $data[$defaultN2nLocale][$selectedModuleNamespace];
+				}
 				
-				$view = $this->n2nContext->lookup(ViewFactory::class)
-						->create('ch\hnm\util\n2n\textblocks\view\exportedFile.csv',
-								array('iniFilePath' => $iniFilePath, 
-										'localeIniFilePath' => $localeIniFilePath, 'skipTranslated' => $this->skipTranslated), 
-								$this->moduleManager->getModuleByNs($selectedModuleNamespace));
-				
-				$view->initialize();
-				IoUtils::putContentsSafe($fileFsPath, $view->getContents());
-				$mc->addInfo('"' . (string) $fileFsPath . '" erstellt.');
+				$data[$localeId][$selectedModuleNamespace] = $this->getData($defaultIniData, $localeId, $selectedModuleNamespace);
 			}
 		}
+		
+		if ($this->skipTranslated) {
+			$defaultData = [];
+			foreach ($data[$defaultN2nLocale] as $moduleNs => $defaultData) {
+				$defaultData[$moduleNs] = [];
+				foreach ($defaultData as $key => $value) {
+					$useKey = false;					
+					foreach ($this->selectedLocaleIds as $localeId) {
+						if (!isset($data[$localeId][$moduleNs])) continue;
+						$useKey = true;
+						break;
+					}
+					
+					if (!$useKey) continue;
+					
+					$defaultData[$moduleNs][$key] = $value;
+				}
+			}
+			
+			$data[$defaultN2nLocale] = $defaultData;
+		}
+	}
+	
+	private function getData(array $defaultIniData, string $localeId, string $moduleNs) {
+		$localeIniData = [];
+		try {
+			$localeIniFilePath = $this->determineIniFilePath($selectedModuleNamespace, $localeId);
+			$localeIniData = IoUtils::parseIniFile($localeIniFilePath);
+		} catch (TypeNotFoundException $e) {}
+		
+		$data = [];
+		foreach ($defaultIniData as $key => $value) {
+			if (isset($localeIniData[$key])) {
+				if ($this->skipTranslated) {
+					continue;
+				}
+				$value = $localeParsedIniString[$key];
+			}
+			$data[$key] = $value;
+		}
+		
+		return $data;
 	}
 	
 	public function getModuleNamespaceOptions() {
@@ -84,12 +129,27 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 // 		$defaultN2nLocale = N2nLocale::getDefault();
 		
 		foreach ($this->moduleManager->getModules() as $module) {
-			if (in_array($module->getNamespace(), array('n2n', 'rocket', 'page'))) continue;
+			if (self::isModuleSealed((string) $module)) continue;
+			
 			$dtc = new DynamicTextCollection($module, N2N::getN2nLocales());
 			if ($dtc->isEmpty()) continue;
 			$moduleNamespaces[$module->getNamespace()] = $module->getModuleInfo()->getName();
 		}
 		return $moduleNamespaces;
+	}
+	
+	public static function isModuleSealed(string $namespace) {
+		if ($namespace === N2N::NS) return true;
+		
+		foreach (TypeLoader::getNamespaceDirPaths($namespace) as $dirPath) {
+			if (preg_match('/.*\\\\(vendor|lib)\\\\.*/', realpath($dirPath)) > 0) return true;
+		}
+		
+		foreach (TypeLoader::getNamespaceDirPaths($namespace . '\\') as $dirPath) {
+			if (preg_match('/.*\\\\(vendor|lib)\\\\.*/', realpath($dirPath)) > 0) return true;
+		}
+		
+		return false;
 	}
 	
 	private static function buildModuleLangNs($module) {
