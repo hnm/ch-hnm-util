@@ -10,7 +10,11 @@
 	$textBlockExportForm = $view->getParam('textBlockExportForm');
 	$view->assert($textBlockExportForm instanceof TextBlockExportForm);
 	
-	$view->useTemplate('\bstmpl\view\bsTemplate.html', array('title' => 'Textblocks'));
+	try {
+		$view->useTemplate('\bstmpl\view\bsTemplate.html', array('title' => 'Textblocks'));
+	} catch (\n2n\core\TypeNotFoundException $e) {
+		$view->useTemplate('template.html', ['title' => 'Textblocks']);
+	}
 	
 // 	$bootstrapFormHtml = new BsFormHtmlBuilder($view);
 ?>
