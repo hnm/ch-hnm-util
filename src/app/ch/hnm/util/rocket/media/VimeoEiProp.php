@@ -75,6 +75,9 @@ class VimeoEiProp extends AlphanumericEiProp {
 				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
 				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
 	}
+	public function saveSiField(SiField $siField, Eiu $eiu) {
+	}
+
 }
 
 class VimeoOption extends StringMag {
