@@ -58,13 +58,13 @@ class ImportUpload extends ObjectAdapter {
 
 			foreach ($cl->getValues() as $key => $value) {
 				if (isset($assignationMap[$key])) {
-					$eiFieldPathStr = $assignationMap[$key];
+					$eiPropPathStr = $assignationMap[$key];
 
 					try {
-						$eiuEntry->setScalarValue($eiFieldPathStr, $value);
+						$eiuEntry->setScalarValue($eiPropPathStr, $value);
 					} catch (ValueIncompatibleWithConstraintsException $e) {
 						$mc->addError($dtc->translate('invalid_value_for_label') . $eiuFrame->getEiMask()->getEiEngine()
-								->getScalarEiDefinition()->getScalarEiPropertyByFieldPath($eiFieldPathStr)
+								->getScalarEiDefinition()->getScalarEiPropertyByFieldPath($eiPropPathStr)
 								->getLabelLstr());
 					}
 				}

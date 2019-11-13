@@ -21,7 +21,7 @@
 	</thead>
 	<tbody>
 	<?php foreach ($scalarEiProperties as $scalarEiProperty): ?>
-		<?php $scalarEiPropertyFieldPath = $scalarEiProperty->getEiFieldPath() ?>
+		<?php $scalarEiPropertyFieldPath = $scalarEiProperty->getEiPropPath() ?>
 		<tr>
 			<th>
 				<?php $html->out((string) $scalarEiProperty->getLabelLStr()) ?>
@@ -34,7 +34,7 @@
 							(string) $scalarEiPropertyFieldPath, array('checked' => 1)) ?>
 					<?php elseif ($assignationJsonArr !== null
 						&& isset($assignationJsonArr[$csvPropName])
-						&& $assignationJsonArr[$csvPropName] === (string) $scalarEiProperty->getEiFieldPath()): ?>
+						&& $assignationJsonArr[$csvPropName] === (string) $scalarEiProperty->getEiPropPath()): ?>
 
 						<?php $formHtml->inputRadio('assignationMap[' . $csvPropName. ']',
 							(string) $scalarEiPropertyFieldPath, array('checked' => 1)) ?>

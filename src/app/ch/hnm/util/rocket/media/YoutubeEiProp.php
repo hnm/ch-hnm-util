@@ -28,6 +28,7 @@ use rocket\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 use rocket\si\content\SiField;
+use rocket\si\content\impl\SiFields;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -40,31 +41,31 @@ class YoutubeEiProp extends AlphanumericEiProp {
 	}
 	
 	public function createOutSiField(Eiu $eiu): SiField  {
-		$html = $view->getHtmlBuilder();
-		$value = $eiu->entry()->getValue($this);
-		if ($value === null) return null;
-		$urlEncodedValue = urlencode($value);
-		if (!$eiu->gui()->isCompact()) {
-			$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
-			return new Raw($raw);
-		}
+		return SiFields::stringIn($eiu->field()->getValue());
 		
-		$meta = $html->meta();
-		$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
-		$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
-		$meta->addJs('impl/js/image-preview.js');
+// 		$html = $view->getHtmlBuilder();
+// 		$value = $eiu->entry()->getValue($this);
+// 		if ($value === null) return null;
+// 		$urlEncodedValue = urlencode($value);
+// 		if (!$eiu->gui()->isCompact()) {
+// 			$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
+// 			return new Raw($raw);
+// 		}
 		
-		$videoUrl = 'https://www.youtube.com/watch?v=' . $urlEncodedValue;
+// 		$meta = $html->meta();
+// 		$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
+// 		$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
+// 		$meta->addJs('impl/js/image-preview.js');
 		
-		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl), 
-				['class' => 'rocket-video-previewable', 'target' => '_blank']);
+// 		$videoUrl = 'https://www.youtube.com/watch?v=' . $urlEncodedValue;
+		
+// 		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl), 
+// 				['class' => 'rocket-video-previewable', 'target' => '_blank']);
 	}
-	/* (non-PHPdoc)
-	 * @see \rocket\spec\ei\manage\gui\Editable::createOption()
-	 */
+
 	public function createInSiField(Eiu $eiu): SiField {
-		return new StringMag($this->getLabelLstr(), null,
-				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
-				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
+		return SiFields::stringIn($eiu->field()->getValue())
+				->setMandatory($this->editConfig->isMandatory())
+				->setMaxlength($this->getMaxlength());
 	}
 }
