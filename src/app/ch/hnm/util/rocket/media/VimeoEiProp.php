@@ -51,7 +51,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 		
 		if ($value === null) return null;
 		$urlEncodedValue = urlencode($value);
-		if (!$eiu->gui()->isCompact()) {
+		if (!$eiu->guiFrame()->isCompact()) {
 			$raw = '<iframe src="//player.vimeo.com/video/' . $html->getEsc($urlEncodedValue)
 				. '" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 			return new Raw($raw);

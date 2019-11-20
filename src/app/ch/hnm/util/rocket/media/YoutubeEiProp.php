@@ -47,7 +47,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 // 		$value = $eiu->entry()->getValue($this);
 // 		if ($value === null) return null;
 // 		$urlEncodedValue = urlencode($value);
-// 		if (!$eiu->gui()->isCompact()) {
+// 		if (!$eiu->guiFrame()->isCompact()) {
 // 			$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
 // 			return new Raw($raw);
 // 		}
