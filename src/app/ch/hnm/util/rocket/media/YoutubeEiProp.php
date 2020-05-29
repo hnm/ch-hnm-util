@@ -65,7 +65,7 @@ class YoutubeEiProp extends AlphanumericEiProp {
 
 	public function createInSiField(Eiu $eiu): SiField {
 		return SiFields::stringIn($eiu->field()->getValue())
-				->setMandatory($this->editConfig->isMandatory())
-				->setMaxlength($this->getMaxlength());
+				->setMandatory($this->getEditConfig()->isMandatory())
+				->setMaxlength($this->getAlphanumericConfig()->getMaxlength());
 	}
 }
