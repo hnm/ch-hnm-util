@@ -44,7 +44,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	 * @param Eiu $eiu
 	 * @return NULL|\n2n\web\ui\Raw
 	 */
-	public function createOutSiField(Eiu $eiu): SiField  {
+	public function createOutEifGuiField(Eiu $eiu): EifGuiField  {
 		$html = $view->getHtmlBuilder();
 		$eiObject = $eiu->entry()->object()->getEiObject();
 		$value = $this->getObjectPropertyAccessProxy()->getValue($eiObject->getEiEntityObj()->getEntityObj());
@@ -70,7 +70,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 	/* (non-PHPdoc)
 	 * @see \rocket\spec\ei\component\field\StatelessGuiFieldEditable::createOption()
 	 */
-	public function createInSiField(Eiu $eiu): SiField {
+	public function createInEifGuiField(Eiu $eiu): EifGuiField {
 		return new VimeoOption($this->getLabelLstr(), null,
 				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
 				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));

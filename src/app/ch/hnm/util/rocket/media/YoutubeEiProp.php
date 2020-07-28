@@ -21,14 +21,11 @@
  */
 namespace ch\hnm\util\rocket\media;
 
-use n2n\web\ui\Raw;
-use n2n\impl\web\dispatch\mag\model\StringMag;
-use n2n\impl\web\ui\view\html\HtmlView;
 use rocket\ei\util\Eiu;
-use n2n\web\dispatch\mag\Mag;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 use rocket\si\content\SiField;
 use rocket\si\content\impl\SiFields;
+use rocket\ei\util\factory\EifGuiField;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -40,8 +37,8 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		$eiu->field()->setValue($option->getValue());
 	}
 	
-	public function createOutSiField(Eiu $eiu): SiField  {
-		return SiFields::stringIn($eiu->field()->getValue());
+	public function createOutEifGuiField(Eiu $eiu): EifGuiField  {
+		return $eiu->factory()->newGuiField(SiFields::stringOut($eiu->field()->getValue()));
 		
 // 		$html = $view->getHtmlBuilder();
 // 		$value = $eiu->entry()->getValue($this);
@@ -63,9 +60,5 @@ class YoutubeEiProp extends AlphanumericEiProp {
 // 				['class' => 'rocket-video-previewable', 'target' => '_blank']);
 	}
 
-	public function createInSiField(Eiu $eiu): SiField {
-		return SiFields::stringIn($eiu->field()->getValue())
-				->setMandatory($this->getEditConfig()->isMandatory())
-				->setMaxlength($this->getAlphanumericConfig()->getMaxlength());
-	}
+
 }
