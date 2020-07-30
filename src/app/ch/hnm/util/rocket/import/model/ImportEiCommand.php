@@ -45,6 +45,6 @@ class ImportEiCommand extends IndependentEiCommandAdapter {
 		$tooltip = $dtc->translate('import_tooltip', array('type' => $eiUtils->getGenericLabel()));
 
 		return array(self::CONTROL_IMPORT_KEY => HrefControl::create($eiFrame, $this, null,
-				new SiButton($name, $tooltip, true, SiButton::TYPE_SUCCESS, SiIconType::ICON_PLUS_CIRCLE)));
+				new SiButton($name, $tooltip, true, SiButton::TYPE_SUCCESS, SiIconType::PLUS_CIRCLE)));
 	}
 }
