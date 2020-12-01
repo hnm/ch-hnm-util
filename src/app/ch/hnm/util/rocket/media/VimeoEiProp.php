@@ -31,6 +31,7 @@ use n2n\web\dispatch\mag\Mag;
 use n2n\web\ui\UiComponent;
 use n2n\web\dispatch\mag\UiOutfitter;
 use rocket\si\content\SiField;
+use rocket\ei\util\factory\EifGuiField;
 
 
 class VimeoEiProp extends AlphanumericEiProp {
