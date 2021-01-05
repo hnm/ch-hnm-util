@@ -5,7 +5,7 @@ use n2n\impl\web\ui\view\html\HtmlView;
 use n2n\l10n\DynamicTextCollection;
 use n2n\l10n\N2nLocale;
 use n2n\web\http\controller\Controller;
-use rocket\impl\ei\component\command\IndependentEiCommandAdapter;
+use rocket\impl\ei\component\command\adapter\IndependentEiCommandAdapter;
 use rocket\si\control\SiButton;
 use rocket\si\control\SiIconType;
 use rocket\ei\util\Eiu;
