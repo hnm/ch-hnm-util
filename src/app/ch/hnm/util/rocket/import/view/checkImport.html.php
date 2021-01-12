@@ -33,7 +33,7 @@
 	<ul>
 		<li>
 			<?php $html->linkToUrl(null, new Raw('<i class="fa fa-cloud-upload"></i> ' . $html->getL10nText('rocket_import_confirm_label')),
-						array('class' => 'rocket-control-success rocket-important'), array('c' => 1)) ?>
+						array('class' => 'rocket-structure-content-success rocket-important'), array('c' => 1)) ?>
 		</li>
 	</ul>
 </div>

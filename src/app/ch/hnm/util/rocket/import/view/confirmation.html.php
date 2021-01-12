@@ -26,7 +26,7 @@
 	<ul>
 		<li>
 			<?php $html->linkToController(null, $html->getText('rocket_import_finished_label'),
-                    array('class' => 'rocket-control-success rocket-important')) ?>
+                    array('class' => 'rocket-structure-content-success rocket-important')) ?>
 		</li>
 	</ul>
 </div>

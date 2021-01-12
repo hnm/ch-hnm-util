@@ -21,12 +21,11 @@
  */
 namespace ch\hnm\util\rocket\media;
 
-use n2n\web\ui\Raw;
-use n2n\impl\web\dispatch\mag\model\StringMag;
-use n2n\impl\web\ui\view\html\HtmlView;
 use rocket\ei\util\Eiu;
-use n2n\web\dispatch\mag\Mag;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
+use rocket\si\content\SiField;
+use rocket\si\content\impl\SiFields;
+use rocket\ei\util\factory\EifGuiField;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -34,36 +33,32 @@ class YoutubeEiProp extends AlphanumericEiProp {
 		return 'Youtube Video';
 	}
 	
-	public function saveMagValue(Mag $option, Eiu $eiu) {
+	public function saveSiField(SiField $siField, Eiu $eiu) {
 		$eiu->field()->setValue($option->getValue());
 	}
 	
-	public function createUiComponent(HtmlView $view, Eiu $eiu)  {
-		$html = $view->getHtmlBuilder();
-		$value = $eiu->entry()->getValue($this);
-		if ($value === null) return null;
-		$urlEncodedValue = urlencode($value);
-		if (!$eiu->gui()->isCompact()) {
-			$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
-			return new Raw($raw);
-		}
+	public function createOutEifGuiField(Eiu $eiu): EifGuiField  {
+		return $eiu->factory()->newGuiField(SiFields::stringOut($eiu->field()->getValue()));
 		
-		$meta = $html->meta();
-		$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
-		$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
-		$meta->addJs('impl/js/image-preview.js');
+// 		$html = $view->getHtmlBuilder();
+// 		$value = $eiu->entry()->getValue($this);
+// 		if ($value === null) return null;
+// 		$urlEncodedValue = urlencode($value);
+// 		if (!$eiu->guiFrame()->isCompact()) {
+// 			$raw = '<iframe class="rocket-youtube-video-preview" type="text/html" src="https://www.youtube.com/embed/' . $html->getEsc($urlEncodedValue) . '"></iframe>';
+// 			return new Raw($raw);
+// 		}
 		
-		$videoUrl = 'https://www.youtube.com/watch?v=' . $urlEncodedValue;
+// 		$meta = $html->meta();
+// 		$html->meta()->addCss('impl/js/thirdparty/magnific-popup/magnific-popup.min.css', 'screen');
+// 		$html->meta()->addJs('impl/js/thirdparty/magnific-popup/jquery.magnific-popup.min.js');
+// 		$meta->addJs('impl/js/image-preview.js');
 		
-		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl), 
-				['class' => 'rocket-video-previewable', 'target' => '_blank']);
+// 		$videoUrl = 'https://www.youtube.com/watch?v=' . $urlEncodedValue;
+		
+// 		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl), 
+// 				['class' => 'rocket-video-previewable', 'target' => '_blank']);
 	}
-	/* (non-PHPdoc)
-	 * @see \rocket\spec\ei\manage\gui\Editable::createOption()
-	 */
-	public function createMag(Eiu $eiu): Mag {
-		return new StringMag($this->getLabelLstr(), null,
-				$this->isMandatory($eiu), $this->getMaxlength(), false, null,
-				array('placeholder' => $this->getLabelLstr(), 'class' => 'form-control'));
-	}
+
+
 }

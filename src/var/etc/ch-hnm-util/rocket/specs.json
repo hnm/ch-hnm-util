@@ -7,7 +7,7 @@
             "label": "Link",
             "pluralLabel": "Links",
             "iconType": "fa fa-link",
-            "fields": {
+            "props": {
                 "type": {
                     "class": "rocket\\impl\\ei\\component\\prop\\enum\\EnumEiProp",
                     "props": {

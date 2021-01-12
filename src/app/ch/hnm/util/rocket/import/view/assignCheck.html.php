@@ -38,7 +38,7 @@
 <div id="rocket-page-controls">
     <ul>
         <li>
-            <?php $html->linkToController(array('execute', $view->getParam('iuId')), $html->getText('rocket_import_execute_label'), array('class' => 'rocket-control-success rocket-important')) ?>
+            <?php $html->linkToController(array('execute', $view->getParam('iuId')), $html->getText('rocket_import_execute_label'), array('class' => 'rocket-structure-content-success rocket-important')) ?>
         </li>
     </ul>
 </div>
