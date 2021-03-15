@@ -26,6 +26,8 @@ use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 use rocket\si\content\SiField;
 use rocket\si\content\impl\SiFields;
 use rocket\ei\util\factory\EifGuiField;
+use rocket\si\control\SiNavPoint;
+use n2n\util\uri\Url;
 
 class YoutubeEiProp extends AlphanumericEiProp {
 	
@@ -38,7 +40,18 @@ class YoutubeEiProp extends AlphanumericEiProp {
 	}
 	
 	public function createOutEifGuiField(Eiu $eiu): EifGuiField  {
-		return $eiu->factory()->newGuiField(SiFields::stringOut($eiu->field()->getValue()));
+// 		return $eiu->factory()->newGuiField(SiFields::stringOut($eiu->field()->getValue()));
+		
+		$value = $eiu->field()->getValue();
+		if ($value === null) {
+			return $eiu->factory()->newGuiField(SiFields::stringOut(null));
+		}
+		
+		$urlEncodedValue = urlencode($value);
+		$videoUrl = 'https://www.youtube.com/watch?v=' . $urlEncodedValue;
+		
+		$label = preg_replace('/^https?:\/\//', '', $videoUrl);
+		return $eiu->factory()->newGuiField(SiFields::linkOut(SiNavPoint::href(Url::create($videoUrl, true)), $label)->setLytebox(true));
 		
 // 		$html = $view->getHtmlBuilder();
 // 		$value = $eiu->entry()->getValue($this);
@@ -59,6 +72,4 @@ class YoutubeEiProp extends AlphanumericEiProp {
 // 		return $html->getLink($videoUrl, preg_replace('/^https?:\/\//', '', $videoUrl), 
 // 				['class' => 'rocket-video-previewable', 'target' => '_blank']);
 	}
-
-
 }
