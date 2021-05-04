@@ -14,13 +14,21 @@
 			"email" : "jansen@hnm.ch"
 		}
 	],
+	"minimum-stability" : "dev",
+	"prefer-stable": true,
 	"require" : {
 		"php" : ">=7.0",
-		"n2n/n2n-composer-module-installer" : "^7.1"
+		"n2n/n2n-composer-module-installer" : "^7.1.3"
 	},
 	"autoload" : {
 		"psr-4" : {
 			"ch\\hnm\\util\\" : "src/app/ch/hnm/util"
 		}
+	},
+	"require-dev" : {
+		"n2n/hangar" : "^8.0.0",
+		"n2n/page": "^1.5.0",
+        "hnm/bstmpl": "^2.1.0",
+        "phpoffice/phpspreadsheet" : "^1.2.0"
 	}
 }
