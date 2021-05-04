@@ -29,6 +29,6 @@
 		"n2n/hangar" : "^8.0.0",
 		"n2n/page": "^1.5.0",
         "hnm/bstmpl": "^2.1.0",
-        "phpoffice/phpspreadsheet" : "^1.2.0"
+        "phpunit/phpunit" : "^9.5"
 	}
 }
