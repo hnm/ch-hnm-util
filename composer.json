@@ -25,6 +25,11 @@
 			"ch\\hnm\\util\\" : "src/app/ch/hnm/util"
 		}
 	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"ch\\hnm\\util\\" : "src/app/ch/hnm/util"
+		}
+	},
 	"require-dev" : {
 		"n2n/hangar" : "^8.0.0",
 		"n2n/page": "^1.5.0",
