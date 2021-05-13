@@ -15,6 +15,10 @@
         "php": ">=7.0",
         "n2n/n2n-composer-module-installer": "7.1.x-dev"
     },
+    "require-dev" : {
+      "n2n/7.2.x" : "^8.0.0",
+      "phpunit/phpunit" : "^9.5"
+    },
     "autoload": {
         "psr-4": {
             "ch\\hnm\\util\\": "src/app/ch/hnm/util"
