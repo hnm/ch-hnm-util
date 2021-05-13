@@ -1,0 +1,27 @@
+{
+    "name": "n2n/n2nutil-jquery",
+    "type": "n2n-module",
+    "description": "jquery utils for n2n",
+    "keywords": [
+        "n2n",
+        "jquery"
+    ],
+    "homepage": "https://n2n.rocks/",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Thomas G\u00fcnther",
+            "email": "guenther@hnm.ch"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "n2n/n2n-composer-module-installer": "~7.1.2",
+        "n2n/n2n-web": "^7.2.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "n2nutil\\jquery\\": "src/app/n2nutil/jquery"
+        }
+    }
+}

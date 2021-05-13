@@ -1,0 +1,34 @@
+{
+    "name": "n2n/n2n-impl-web-ui",
+    "type": "n2n-module",
+    "description": "n2n web ui implementation",
+    "keywords": [
+        "n2n",
+        "html",
+        "csv",
+        "xml"
+    ],
+    "homepage": "https://n2n.rocks/",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Andreas von Burg",
+            "email": "a@von-burg.net",
+            "homepage": "https://www.von-burg.net/"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "n2n/n2n-composer-module-installer": "~7.1.3",
+        "n2n/n2n-web": "^7.2.33",
+        "n2n/n2n-io": "^7.2.33",
+        "n2n/n2n-l10n": "^7.2.33",
+        "n2n/n2n-reflection": "^7.2.33",
+        "n2n/n2n-util": "^7.2.33"
+    },
+    "autoload": {
+        "psr-4": {
+            "n2n\\impl\\web\\ui\\": "src/app/n2n/impl/web/ui"
+        }
+    }
+}
