@@ -23,6 +23,7 @@ class IcalEvent extends IcalComponent {
 	private $description;
 	private $location;
 	private $url;
+	private $includeTimezone = false;
 	
 	private $additionalProperties = array();
 	
@@ -90,6 +91,15 @@ class IcalEvent extends IcalComponent {
 		$this->location = $location;
 		return $this;
 	}
+	
+	public function setIncludeTimeZone(bool $includeTimeZone) {
+		$this->includeTimezone = $includeTimeZone;
+		return $this;
+	}
+	
+	public function isIncludeTimeZone() {
+		return $this->includeTimezone;
+	}
 
 	public function getUrl() {
 		return $this->url;
@@ -125,13 +135,19 @@ class IcalEvent extends IcalComponent {
 			$properties[self::KEY_URL] = $this->url;
 		}
 		
-		$properties[self::KEY_DTSTART] = $this->buildDateTimeValue($this->dateStart);
-		$properties[self::KEY_DTEND] =  $this->buildDateTimeValue($this->dateEnd);
-		$properties[self::KEY_DTSTAMP] = $this->buildDateTimeValue(new \DateTime());
+		$properties[self::KEY_DTSTART . $this->buildTimeZonePrefix($this->dateStart)] = $this->buildDateTimeValue($this->dateStart);
+		$properties[self::KEY_DTEND . $this->buildTimeZonePrefix($this->dateEnd)] =  $this->buildDateTimeValue($this->dateEnd);
+		$properties[self::KEY_DTSTAMP . $this->buildTimeZonePrefix(new \DateTime())] = $this->buildDateTimeValue(new \DateTime());
 		
 		$properties[self::KEY_END] = self::TYPE;
 		
 		return $properties;
+	}
+	
+	private function buildTimeZonePrefix(\DateTime $dateTime) {
+		if (!$this->includeTimezone) return '';
+		
+		return ';TZID=' . $dateTime->getTimezone()->getName();
 	}
 	
 	private function buildDateTimeValue(\DateTime $dateTime) {
