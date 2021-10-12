@@ -1,3 +1,2 @@
-vendor
-comp
-composer.lock
+/vendor/
+/.phpunit.result.cache

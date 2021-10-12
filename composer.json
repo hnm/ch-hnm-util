@@ -17,7 +17,7 @@
 	"minimum-stability" : "dev",
 	"prefer-stable": true,
 	"config" : {
-		"vendor-dir" : "src-php/vendor"
+		"vendor-dir" : "src/vendor"
 	},
 	"require" : {
 		"php" : ">=7.0",

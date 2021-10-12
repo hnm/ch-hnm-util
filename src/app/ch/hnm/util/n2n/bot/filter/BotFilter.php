@@ -31,8 +31,6 @@ class BotFilter extends ControllerAdapter {
 	}
 	
 	public function doImage(BotModel $botHiddenImageModel) {
-		if (!$botHiddenImageModel->isCheckImage()) return;
-		
 		$botHiddenImageModel->setImageLoaded(true);
 		
 		$tmpFilePath = tempnam(sys_get_temp_dir(), 'hidden');
