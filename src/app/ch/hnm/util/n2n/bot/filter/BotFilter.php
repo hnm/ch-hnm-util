@@ -31,6 +31,7 @@ class BotFilter extends ControllerAdapter {
 	}
 	
 	public function doImage(BotModel $botHiddenImageModel) {
+		$this->assignHttpCacheControl(null, ['no-cache', 'no-store', 'must-revalidate']);
 		$botHiddenImageModel->setImageLoaded(true);
 		
 		$tmpFilePath = tempnam(sys_get_temp_dir(), 'hidden');
