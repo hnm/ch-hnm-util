@@ -4,9 +4,6 @@ namespace ch\hnm\util\n2n\textblocks\model;
 use n2n\web\dispatch\Dispatchable;
 use n2n\core\TypeLoader;
 use n2n\core\N2N;
-use n2n\core\TypeNotFoundException;
-use n2n\core\VarStore;
-use n2n\io\IoUtils;
 use n2n\web\http\Response;
 use n2n\impl\web\dispatch\map\val\ValEnum;
 use n2n\l10n\MessageContainer;
@@ -16,8 +13,6 @@ use n2n\l10n\N2nLocale;
 use n2n\core\container\N2nContext;
 use n2n\context\RequestScoped;
 use n2n\web\dispatch\map\bind\BindingDefinition;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class TextBlockExportForm implements Dispatchable, RequestScoped {
 	
@@ -25,12 +20,16 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 	protected $selectedLocaleIds;
 	public $skipTranslated = true;
 	
-	private $n2nContext;
 	private $moduleManager;
+	private $data;
+	
 	
 	private function _init(N2nContext $n2nContext) {
-		$this->n2nContext = $n2nContext;
 		$this->moduleManager = $n2nContext->getModuleManager();
+	}
+	
+	public function getData() {
+		return $this->data;
 	}
 	
 	public function getSelectedModuleNamespaces() {
@@ -55,60 +54,87 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 	}
 	
 	public function export(Response $response, MessageContainer $mc) {
-		foreach ($this->selectedModuleNamespaces as $selectedModuleNamespace) {
-			foreach ($this->selectedLocaleIds as $localeId) {
-				$data[$selectedModuleNamespace][$localeId] = $this->getData($localeId, $selectedModuleNamespace);
+		$defaultN2nLocale = N2nLocale::getDefault();
+		
+		foreach ($this->selectedLocaleIds as $localeId) {
+			foreach ($this->selectedModuleNamespaces as $selectedModuleNamespace) {
+				$defaultIniData = [];
+				if (!isset($data[$selectedModuleNamespace][$defaultN2nLocale->getId()])) {
+					$tc = TextCollectionLoader::load($selectedModuleNamespace . '\lang\\' . $defaultN2nLocale->getLanguageId());
+					$data[$selectedModuleNamespace][$defaultN2nLocale->getId()] = $tc->getTexts();
+				} else {
+					$defaultIniData = $data[$selectedModuleNamespace][$defaultN2nLocale->getId()];
+				}
+				
+				$data[$selectedModuleNamespace][$localeId] = $this->getTextData($defaultIniData, $localeId, $selectedModuleNamespace);
 			}
 		}
 		
-
-		$languageFiles = [];
-		foreach ($data as $module => $data) {
-			$i = 1;
-			$header = ['key'];
-			foreach ($data as $language => $translation) {
-				$header[] = $language;
-				foreach ($translation as $key => $value) {
-					$languageFiles[$module][$key][0] = $key;
-					$languageFiles[$module][$key][$i] = $value;
-				}
-				$i++;
-			}
-			
-			if ($this->skipTranslated) {
-				$headerCount = count($header);
-				foreach ($languageFiles[$module] as $key => $translation) {
-					$translatedKeys = 0;
-					foreach ($translation as $value) {
-						if (!empty($value)) $translatedKeys++;
+		if ($this->skipTranslated) {
+			$defaultData = [];
+			foreach ($data[$defaultN2nLocale->getId()] as $moduleNs => $defaultData) {
+				$defaultData[$moduleNs] = [];
+				foreach ($defaultData as $key => $value) {
+					$useKey = false;
+					foreach ($this->selectedLocaleIds as $localeId) {
+						if (!isset($data[$localeId][$moduleNs])) continue;
+						$useKey = true;
+						break;
 					}
-					if ($headerCount == $translatedKeys) {
-						unset($languageFiles[$module][$key]);
-					}
+					
+					if (!$useKey) continue;
+					
+					$defaultData[$moduleNs][$key] = $value;
 				}
 			}
-			array_unshift($languageFiles[$module], $header);
-		
-			$spreadSheet = new Spreadsheet();
-			$spreadSheet->setActiveSheetIndex(0)->fromArray($languageFiles[$module], null, 'A1', true);
-			$writer = IOFactory::createWriter($spreadSheet, 'Xlsx');
-			$fileFsPath = $this->n2nContext->getVarStore()->requestFileFsPath(VarStore::CATEGORY_TMP,
-					'tmpl', 'textblocks', str_replace('\\', '.', $module) . '.xlsx', true, true);
-			$writer->save((string) $fileFsPath);
-			$mc->addInfo('"' . (string) $fileFsPath . '" erstellt.');
 			
+			$data[$defaultN2nLocale->getId()] = $defaultData;
 		}
 		
+		$this->data = $data;
 	}
 	
-	private function getData(string $localeId, string $moduleNs) {
-		$localeIniData = [];
-		try {
-			$localeIniFilePath = $this->determineIniFilePath($moduleNs, $localeId);
-			$localeIniData = IoUtils::parseIniFile($localeIniFilePath);
-		} catch (TypeNotFoundException $e) {}
+	public function prepareData(array $moduleData) {
+		$preparedData = [];
+		$i = 1;
+		foreach ($moduleData as $id => $textBlocks) {
+			foreach ($textBlocks as $key => $value) {
+				if (!isset($preparedData[$key][0])) {
+					$preparedData[$key][0] = $key;
+				}
+				$preparedData[$key][$i] = $value;
+			}
+			$i++;
+		}
+		return $preparedData;
+	}
+	
+	private function getTextblocks(N2nLocale $locale, $moduleNs) {
+		$tc = TextCollectionLoader::loadIfExists($moduleNs . '\lang\\' . $locale->getId());
+		if (!$tc) {
+			$tc = TextCollectionLoader::loadIfExists($moduleNs . '\lang\\' . $locale->getLanguageId());
+		}
+		if (!$tc) {
+			return [];
+		}
+		return $tc->getTexts();
+	}
+	
+	private function getTextData(array $defaultData, string $localeId, string $moduleNs) {
+		$locale = N2nLocale::build($localeId);
+		$data = $this->getTextblocks($locale, $moduleNs);
 		
-		return $localeIniData;
+		foreach ($defaultData as $key => $value) {
+			if (isset($data[$key])) {
+				if ($this->skipTranslated) {
+					continue;
+				}
+				$value = $defaultData[$key];
+			}
+			$data[$key] = $value;
+		}
+		
+		return $data;
 	}
 	
 	public function getModuleNamespaceOptions() {
@@ -148,26 +174,9 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 // 		$defaultLocale = N2nLocale::getDefault();
 		foreach (N2N::getN2nLocales() as $locale) {
 // 			if ($locale->equals($defaultLocale)) continue;
-			$localeIdOptions[$locale->getLanguageId()] = $locale->getLanguage();
+			$localeIdOptions[$locale->getId()] = $locale->getLanguage();
 		}
 		return $localeIdOptions;
 	}
 	
-	private function determineIniFilePath($moduleNamespace, $localeId) {
-		$n2nLocale = N2nLocale::create($localeId);
-		
-		try {
-			return TypeLoader::getFilePathOfType($moduleNamespace . '\\' . DynamicTextCollection::LANG_NS_EXT
-					. '\\' . $n2nLocale, TextCollectionLoader::LANG_INI_FILE_SUFFIX);
-		} catch (TypeNotFoundException $e) {
-			if ($n2nLocale->getLanguageId() === null) return null;
-		}
-		
-		try {
-			return TypeLoader::getFilePathOfType($moduleNamespace . '\\' . DynamicTextCollection::LANG_NS_EXT
-					. '\\' . $n2nLocale->getLanguageId(), TextCollectionLoader::LANG_INI_FILE_SUFFIX);
-		} catch (TypeNotFoundException $e) {
-			return null;
-		}
-	}
 }
