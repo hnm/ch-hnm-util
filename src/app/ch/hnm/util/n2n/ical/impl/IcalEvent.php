@@ -135,22 +135,23 @@ class IcalEvent extends IcalComponent {
 			$properties[self::KEY_URL] = $this->url;
 		}
 		
-		$properties[self::KEY_DTSTART . $this->buildTimeZonePrefix($this->dateStart)] = $this->buildDateTimeValue($this->dateStart);
-		$properties[self::KEY_DTEND . $this->buildTimeZonePrefix($this->dateEnd)] =  $this->buildDateTimeValue($this->dateEnd);
-		$properties[self::KEY_DTSTAMP . $this->buildTimeZonePrefix(new \DateTime())] = $this->buildDateTimeValue(new \DateTime());
+		$properties[self::KEY_DTSTART] = $this->buildDateTimeValue($this->dateStart);
+		$properties[self::KEY_DTEND] =  $this->buildDateTimeValue($this->dateEnd);
+		$properties[self::KEY_DTSTAMP] = $this->buildDateTimeValue(new \DateTime());
 		
 		$properties[self::KEY_END] = self::TYPE;
 		
 		return $properties;
 	}
 	
-	private function buildTimeZonePrefix(\DateTime $dateTime) {
-		if (!$this->includeTimezone) return '';
-		
-		return ';TZID=' . $dateTime->getTimezone()->getName();
-	}
-	
 	private function buildDateTimeValue(\DateTime $dateTime) {
+		if ($this->includeTimezone) {
+			$utcDateTime = clone $dateTime;
+			$utcDateTime->setTimezone(new \DateTimeZone('UTC'));
+			
+			return $utcDateTime->format("Ymd\THis\Z");
+		}
+		
 		return $dateTime->format('Ymd\THis');
 	}
 	
