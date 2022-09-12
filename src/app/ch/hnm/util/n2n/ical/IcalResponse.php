@@ -14,7 +14,7 @@ class IcalResponse extends BufferedPayload {
 	private $version;
 	private $components;
 	private $productId;
-	private $finalProductId;
+	private $finalProductId = null;
 	
 	public function __construct(array $components, string $version = '2.0', string $productId = null)  {
 		ArgUtils::valArray($components, IcalComponent::class);
@@ -44,7 +44,7 @@ class IcalResponse extends BufferedPayload {
 	public function getBufferedContents(): string {
 		$calenderProperties = new IcalProperties(array(IcalComponent::KEY_BEGIN => self::TYPE_CALENDAR,
 				self::KEY_VERSION => $this->version,
-				self::KEY_PRODID => $this->finalProductId));
+				self::KEY_PRODID => $this->finalProductId ?? $this->productId));
 		array_unshift($this->components, $calenderProperties);
 		array_push($this->components, new IcalProperties(array(IcalComponent::KEY_END => self::TYPE_CALENDAR)));
 		
@@ -53,7 +53,7 @@ class IcalResponse extends BufferedPayload {
 	/* (non-PHPdoc)
 	 * @see \n2n\web\http\ResponseObject::prepareForResponse()
 	 */
-	public function prepareForResponse(Response $response): void {
+	public function prepareForResponse(Response $response) {
 		if (null === $this->productId) {
 			$request = $response->getRequest();
 			$this->finalProductId = $request->getHostUrl()->ext($request->getRelativeUrl());
