@@ -17,7 +17,10 @@
 	"minimum-stability" : "dev",
 	"prefer-stable": true,
 	"config" : {
-		"vendor-dir" : "src/vendor"
+		"vendor-dir" : "src/vendor",
+		"allow-plugins": {
+			"n2n/n2n-composer-module-installer": true
+		}
 	},
 	"require" : {
 		"php" : ">=7.0",
@@ -35,8 +38,8 @@
 	},
 	"require-dev" : {
 		"n2n/hangar" : "^8.0.0",
-		"n2n/page": "^1.5.0",
-        "hnm/bstmpl": "^2.1.0",
+		"n2n/page": "^1.6",
+        "hnm/bstmpl": "^3",
         "phpunit/phpunit" : "^9.5"
 	}
 }
