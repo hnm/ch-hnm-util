@@ -11,7 +11,9 @@ use n2n\core\container\N2nContext;
 use n2n\web\http\controller\ControllerContext;
 use n2n\util\uri\Url;
 use page\model\nav\murl\MurlPage;
+use rocket\attribute\EiType;
 
+#[EiType]
 class ExplPageLink extends ObjectAdapter implements UrlComposer {
 	private static function _annos(AnnoInit $ai) {
 		$ai->p('linkedPage', new AnnoManyToOne(Page::getClass(), null, FetchType::EAGER));

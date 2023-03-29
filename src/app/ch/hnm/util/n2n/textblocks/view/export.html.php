@@ -3,7 +3,7 @@
 	use n2n\impl\web\ui\view\html\HtmlView;
 	use n2n\l10n\Message;
 	
-	$view = HtmlView::view($view);
+	$view = HtmlView::view($this);
 	$html = HtmlView::html($view);
 	$formHtml = HtmlView::formHtml($view);
 
@@ -12,7 +12,7 @@
 	
 	try {
 		$view->useTemplate('\bstmpl\view\bsTemplate.html', array('title' => 'Textblocks'));
-	} catch (\n2n\core\TypeNotFoundException $e) {
+	} catch (\ReflectionException $e) {
 		$view->useTemplate('template.html', ['title' => 'Textblocks']);
 	}
 	
