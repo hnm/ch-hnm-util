@@ -23,7 +23,7 @@
 		}
 	},
 	"require" : {
-		"n2n/n2n-composer-module-installer" : "^7.1.3"
+		"n2n/n2n-composer-module-installer" : "^7.1.5"
 	},
 	"autoload" : {
 		"psr-4" : {
