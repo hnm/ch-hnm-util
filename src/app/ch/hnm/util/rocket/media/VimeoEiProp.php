@@ -26,12 +26,12 @@ use n2n\web\ui\Raw;
 use n2n\impl\web\dispatch\mag\model\StringMag;
 use n2n\web\dispatch\map\PropertyPath;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
-use rocket\ei\util\Eiu;
+use rocket\op\ei\util\Eiu;
 use n2n\web\dispatch\mag\Mag;
 use n2n\web\ui\UiComponent;
 use n2n\web\dispatch\mag\UiOutfitter;
 use rocket\si\content\SiField;
-use rocket\ei\util\factory\EifGuiField;
+use rocket\op\ei\util\factory\EifGuiField;
 
 
 class VimeoEiProp extends AlphanumericEiProp {
@@ -69,7 +69,7 @@ class VimeoEiProp extends AlphanumericEiProp {
 		
 	}
 	/* (non-PHPdoc)
-	 * @see \rocket\spec\ei\component\field\StatelessGuiFieldEditable::createOption()
+	 * @see \rocket\op\spec\ei\component\field\StatelessGuiFieldEditable::createOption()
 	 */
 	public function createInEifGuiField(Eiu $eiu): EifGuiField {
 		return new VimeoOption($this->getLabelLstr(), null,

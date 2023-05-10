@@ -8,7 +8,7 @@ use n2n\web\http\controller\Controller;
 use rocket\impl\ei\component\command\adapter\IndependentEiCommandAdapter;
 use rocket\si\control\SiButton;
 use rocket\si\control\SiIconType;
-use rocket\ei\util\Eiu;
+use rocket\op\ei\util\Eiu;
 
 class ImportEiCommand extends IndependentEiCommandAdapter {
 	const ID_BASE = 'import';

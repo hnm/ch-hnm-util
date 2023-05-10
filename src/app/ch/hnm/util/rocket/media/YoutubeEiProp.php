@@ -21,11 +21,11 @@
  */
 namespace ch\hnm\util\rocket\media;
 
-use rocket\ei\util\Eiu;
+use rocket\op\ei\util\Eiu;
 use rocket\impl\ei\component\prop\string\AlphanumericEiProp;
 use rocket\si\content\SiField;
 use rocket\si\content\impl\SiFields;
-use rocket\ei\util\factory\EifGuiField;
+use rocket\op\ei\util\factory\EifGuiField;
 use rocket\si\control\SiNavPoint;
 use n2n\util\uri\Url;
 

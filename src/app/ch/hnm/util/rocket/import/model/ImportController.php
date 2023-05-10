@@ -3,7 +3,7 @@ namespace ch\hnm\util\rocket\import\model;
 
 use n2n\util\StringUtils;
 use rocket\core\model\Breadcrumb;
-use rocket\ei\util\EiuCtrl;
+use rocket\op\ei\util\EiuCtrl;
 use ch\hnm\util\rocket\import\form\ImportForm;
 use n2n\l10n\DynamicTextCollection;
 use n2n\persistence\orm\EntityManager;
