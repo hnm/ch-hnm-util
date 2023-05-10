@@ -2,8 +2,7 @@
 namespace ch\hnm\util\rocket\import\model;
 
 use n2n\util\StringUtils;
-use rocket\core\model\Breadcrumb;
-use rocket\op\ei\util\EiuCtrl;
+use rocket\op\util\OpuCtrl;
 use ch\hnm\util\rocket\import\form\ImportForm;
 use n2n\l10n\DynamicTextCollection;
 use n2n\persistence\orm\EntityManager;
@@ -22,17 +21,17 @@ class ImportController extends ControllerAdapter {
 	private $dtc;
 	private $importDao;
 	/**
-	 * @var EiuCtrl
+	 * @var OpuCtrl
 	 */
-	private $eiuCtrl;
+	private $opuCtrl;
 
 	private function _init(DynamicTextCollection $dtc, ImportDao $importDao) {
 		$this->dtc = $dtc;
 		$this->importDao = $importDao;
 	}
 
-	public function prepare(EiuCtrl $eiuCtrl) {
-		$this->eiuCtrl = $eiuCtrl;
+	public function prepare(OpuCtrl $opuCtrl) {
+		$this->opuCtrl = $opuCtrl;
 	}
 	
 	public function index(TmpFileManager $tmpFileManager, Session $session) {
@@ -73,7 +72,7 @@ class ImportController extends ControllerAdapter {
 		}
 
 		if ($c !== null) {
-			$importUpload = new ImportUpload($this->eiuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now'));
+			$importUpload = new ImportUpload($this->opuCtrl->frame()->getEiThingPath(), $sessionFile, new \DateTime('now'));
 			$this->importDao->saveImportUpload($importUpload);
 
 			$this->redirectToController(['assign', $importUpload->getId()]);
@@ -92,7 +91,7 @@ class ImportController extends ControllerAdapter {
         if ($this->dispatch($assignationForm, 'assign')) {
         	$assignationMap = $assignationForm->getAssignationMap();
             $importUpload->setAssignationJson(StringUtils::jsonEncode($assignationMap));
-            $scalarEiProperties = $this->eiuCtrl->frame()->getScalarEiProperties();
+            $scalarEiProperties = $this->opuCtrl->frame()->getScalarEiProperties();
             $this->forward('..\view\assignCheck.html', array('assignationMap' => $assignationMap,
                     'iuId' => $iuId, 'scalarEiProperties' => $scalarEiProperties,
 					'csvLines' => /*$csvLines = */$csv->getCsvLines(),
@@ -102,7 +101,7 @@ class ImportController extends ControllerAdapter {
 
 		$this->forward('..\view\assign.html', array('importUpload' => $importUpload,
 				'csvPropertyNames' => $csv->getColumnNames(),
-				'scalarEiProperties' => $this->eiuCtrl->frame()->getScalarEiProperties(),
+				'scalarEiProperties' => $this->opuCtrl->frame()->getScalarEiProperties(),
 				'assignationForm' => $assignationForm));
 	}
 
@@ -111,7 +110,7 @@ class ImportController extends ControllerAdapter {
 
 		$this->applyBreadCrumbs(3);
 
-		$importUpload->execute($importUpload, $this->buildUploadedArr($importUpload), $mc, $this->dtc, $this->eiuCtrl->frame());
+		$importUpload->execute($importUpload, $this->buildUploadedArr($importUpload), $mc, $this->dtc, $this->opuCtrl->frame());
 
 		$this->forward('..\view\confirmation.html', array ('messageContainer' => $mc));
     }
@@ -120,7 +119,7 @@ class ImportController extends ControllerAdapter {
 		if (!$importUpload->getStateJson() === null) return array();
 
 		$uploadedLineNums = array();
-		$eiuFrame = $this->eiuCtrl->frame();
+		$eiuFrame = $this->opuCtrl->frame();
 		foreach (StringUtils::jsonDecode($importUpload->getStateJson(), true)['uploaded'] as $entityJsonNote) {
 			$uploaded = true;
 
@@ -162,7 +161,7 @@ class ImportController extends ControllerAdapter {
 	private function removeEntriesFromAssignationJsonArr(array $stateJson) {
 		if (null === $stateJson || !isset($stateJson['uploaded'])) return;
 
-		$eiuFrame = $this->eiuCtrl->frame();
+		$eiuFrame = $this->opuCtrl->frame();
 		foreach ($stateJson['uploaded'] as $entityJsonNote) {
 			try {
 				$eiSelection = $eiuFrame->lookupEiSelectionById($eiuFrame->idRepToId($entityJsonNote['idRep']));
@@ -177,7 +176,7 @@ class ImportController extends ControllerAdapter {
 	}
 
 	private function applyBreadCrumbs(int $stepCount) {
-		$this->eiuCtrl->applyCommonBreadcrumbs(null);
+		$this->opuCtrl->applyCommonBreadcrumbs(null);
 		$bcs = array();
 
 		if ($stepCount > 0) {
@@ -191,7 +190,7 @@ class ImportController extends ControllerAdapter {
 			$bcs[] = new Breadcrumb($this->getUrlToController(array('execute')), $this->dtc->translate('rocket_import_execute_breadcrumb'));
 		}
 
-		$this->eiuCtrl->applyBreandcrumbs(...$bcs);
+		$this->opuCtrl->applyBreandcrumbs(...$bcs);
 	}
 
 	private function getImportUploadById(int $iuId, bool $mandatory = true) {
