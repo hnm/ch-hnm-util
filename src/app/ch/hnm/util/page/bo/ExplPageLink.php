@@ -12,8 +12,12 @@ use n2n\web\http\controller\ControllerContext;
 use n2n\util\uri\Url;
 use page\model\nav\murl\MurlPage;
 use rocket\attribute\EiType;
+use rocket\attribute\EiPreset;
+use rocket\op\spec\setup\EiPresetMode;
+use rocket\attribute\impl\EiPropEnum;
 
-#[EiType]
+#[EiType(label: 'Expliziter Seitenlink')]
+#[EiPreset(EiPresetMode::EDIT_PROPS, excludeProps: ['id'])]
 class ExplPageLink extends ObjectAdapter implements UrlComposer {
 	private static function _annos(AnnoInit $ai) {
 		$ai->p('linkedPage', new AnnoManyToOne(Page::getClass(), null, FetchType::EAGER));
@@ -22,72 +26,58 @@ class ExplPageLink extends ObjectAdapter implements UrlComposer {
 	const TYPE_INTERNAL = 'internal';
 	const TYPE_EXTERNAL = 'external';
 	
-	private $id;
-	private $type = self::TYPE_INTERNAL;
-	private $linkedPage;
-	private $url;
-	private $showExplicit = true;
-	private $label;
+	private int $id;
+	#[EiPropEnum([self::TYPE_INTERNAL => 'intern', self::TYPE_EXTERNAL => 'extern'], guiPropsMap: ['type' => ['internal' => ['linkedPage'], 'external' => ['url']]])]
+	private string $type = self::TYPE_INTERNAL;
+	private ?Page $linkedPage;
+	private ?string $url;
+	private bool $showExplicit = true;
+	private string $label;
 
-	/**
-	 * @return int
-	 */
-	public function getId() {
-		return $this->id;
+	public function getId(): ?int {
+		return $this->id ?? null;
 	}
 
 	/**
 	 * @param int $id
 	 */
-	public function setId($id) {
+	public function setId(int $id) {
 		$this->id = $id;
 	}
 
-	public function getType() {
-		return $this->type;
+	public function getType(): ?string {
+		return $this->type ?? null;
 	}
 	
-	public function setType($type) {
+	public function setType(string $type) {
 		$this->type = $type;
 	}
-	
-	/**
-	 * @return Page|null
-	 */
-	public function getLinkedPage() {
-		return $this->linkedPage;
+
+	public function getLinkedPage(): ?Page {
+		return $this->linkedPage ?? null;
 	}
 
-	/**
-	 * @param Page|null $linkedPage
-	 */
-	public function setLinkedPage(Page $linkedPage = null) {
+	public function setLinkedPage(?Page $linkedPage) {
 		$this->linkedPage = $linkedPage;
 	}
 
-	/**
-	 * @return Url
-	 */
-	public function getUrl() {
-		return $this->url;
+	public function getUrl(): ?string {
+		return $this->url ?? null;
 	}
 
-	/**
-	 * @param Url $url
-	 */
-	public function setUrl($url = null) {
+	public function setUrl(?string $url) {
 		$this->url = $url;
 	}
 
-	public function getLabel() {
-		return $this->label;
+	public function getLabel(): ?string {
+		return $this->label ?? null;
 	}
 
-	public function setLabel($label) {
+	public function setLabel(?string $label) {
 		$this->label = $label;
 	}
 
-	public function isShowExplicit() {
+	public function isShowExplicit(): bool {
 		return $this->showExplicit;
 	}
 
