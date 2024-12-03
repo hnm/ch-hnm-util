@@ -8,7 +8,7 @@ class CsvLine {
 	private $values;
 	private $num;
 
-	public static function create(string $line, $num, array $colNames = null) {
+	public static function create(string $line, $num, ?array $colNames = null) {
 		$values = array();
 		$cells = explode(',', $line);
 

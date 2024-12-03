@@ -16,7 +16,7 @@ class IcalResponse extends BufferedPayload {
 	private $productId;
 	private $finalProductId = null;
 	
-	public function __construct(array $components, string $version = '2.0', string $productId = null)  {
+	public function __construct(array $components, string $version = '2.0', ?string $productId = null)  {
 		ArgUtils::valArray($components, IcalComponent::class);
 		
 		$this->version = $version;
