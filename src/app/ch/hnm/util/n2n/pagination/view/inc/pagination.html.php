@@ -49,7 +49,7 @@
 			</li>
 		<?php else : ?>
 			<li class="page-item <?php $html->out($pagination->getActiveClassName()) ?>">
-				<span class="page-link"><?php $html->out($i) ?><span class="sr-only"><?php $html->text('pagination_current_page') ?></span></span>
+				<span class="page-link"><?php $html->out($i) ?><span class="visually-hidden"><?php $html->text('pagination_current_page_txt') ?></span></span>
  			</li>
 		<?php endif ?>
 	<?php endfor ?>

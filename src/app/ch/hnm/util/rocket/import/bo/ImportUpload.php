@@ -31,7 +31,7 @@ class ImportUpload extends ObjectAdapter {
 	private $stateJson;
 	private $file;
 
-	public function __construct(string $eiThingPath = null, File $file = null, \DateTime $dateTime = null) {
+	public function __construct(?string $eiThingPath = null, ?File $file = null, ?\DateTime $dateTime = null) {
 		$this->eiThingPath = $eiThingPath;
 		$this->file = $file;
 		$this->dateTime = $dateTime;
