@@ -6,8 +6,8 @@ use n2n\l10n\DynamicTextCollection;
 use n2n\l10n\N2nLocale;
 use n2n\web\http\controller\Controller;
 use rocket\impl\ei\component\command\adapter\IndependentEiCommandAdapter;
-use rocket\si\control\SiButton;
-use rocket\si\control\SiIconType;
+use rocket\ui\si\control\SiButton;
+use rocket\ui\si\control\SiIconType;
 use rocket\op\ei\util\Eiu;
 
 class ImportEiCommand extends IndependentEiCommandAdapter {
