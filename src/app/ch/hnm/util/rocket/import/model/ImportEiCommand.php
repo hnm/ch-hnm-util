@@ -6,8 +6,8 @@ use n2n\l10n\DynamicTextCollection;
 use n2n\l10n\N2nLocale;
 use n2n\web\http\controller\Controller;
 use rocket\impl\ei\component\command\adapter\IndependentEiCommandAdapter;
-use rocket\si\control\SiButton;
-use rocket\si\control\SiIconType;
+use rocket\ui\si\control\SiButton;
+use rocket\ui\si\control\SiIconType;
 use rocket\op\ei\util\Eiu;
 
 class ImportEiCommand extends IndependentEiCommandAdapter {
@@ -37,7 +37,7 @@ class ImportEiCommand extends IndependentEiCommandAdapter {
 		$n2nContext = $eiu->frame()->getN2nContext();
 		$eiUtils = $eiu->frame();
 		$eiFrame = $eiUtils->getEiFrame();
-		$httpContext = $n2nContext->getHttpContext();
+		$httpContext = $n2nContext->lookup(\n2n\web\http\HttpContext::class);
 		$dtc = new DynamicTextCollection('rocket', $n2nContext->getN2nLocale());
 // 		$controllerContextPath = $httpContext->getControllerContextPath($eiUtils->getEiFrame()->getControllerContext());
 
