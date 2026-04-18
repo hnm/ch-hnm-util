@@ -39,6 +39,6 @@
 		"n2n/hangar" : "^8.0.0",
 		"n2n/page": "^1.6",
         "hnm/bstmpl": "^3",
-        "phpunit/phpunit" : "^9.5"
+        "phpunit/phpunit" : "^12.5"
 	}
 }
