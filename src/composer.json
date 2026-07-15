@@ -14,12 +14,17 @@
     ],
     "require": {
         "php": ">=7.0",
-        "n2n/n2n-composer-module-installer": "dev-master",
-        "n2n/page": "dev-master",
+       "n2n/n2n-composer-module-installer": "^7.1",
+        "n2n/page": "1.5.x-dev",
         "hnm/bstmpl": "dev-master",
         "phpoffice/phpspreadsheet" : "^1.2.0"
     },
 	"require-dev" : {
 		"n2n/hangar" : "dev-master"
-	}
+	},
+    "config": {
+        "allow-plugins": {
+            "n2n/n2n-composer-module-installer": true
+        }
+    }
 }

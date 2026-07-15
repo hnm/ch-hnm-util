@@ -27,7 +27,7 @@ class IcalEvent extends IcalComponent {
 	
 	private $additionalProperties = array();
 	
-	public function __construct($uid, \DateTime $dateStart, \DateTime $dateEnd = null) {
+	public function __construct($uid, \DateTime $dateStart, ?\DateTime $dateEnd = null) {
 		$this->uid = $uid;
 		$this->dateStart = $dateStart;
 		
@@ -155,7 +155,7 @@ class IcalEvent extends IcalComponent {
 		return $dateTime->format('Ymd\THis');
 	}
 	
-	public static function create($uid, \DateTime $dateStart, \DateTime $dateEnd = null) {
+	public static function create($uid, \DateTime $dateStart, ?\DateTime $dateEnd = null) {
 		return new IcalEvent($uid, $dateStart, $dateEnd);
 	}
 }

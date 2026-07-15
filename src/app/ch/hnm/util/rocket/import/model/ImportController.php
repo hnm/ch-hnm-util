@@ -57,7 +57,7 @@ class ImportController extends ControllerAdapter {
 		$this->redirectToController();
 	}
 	
-	public function doCheckImport(ParamGet $c = null, ParamGet $qn, TmpFileManager $tfm, Session $session) {
+	public function doCheckImport(?ParamGet $c = null, ParamGet $qn, TmpFileManager $tfm, Session $session) {
 		$this->applyBreadCrumbs(1);
 		
 		$sessionFile = $tfm->getSessionFile($qn, $session);
