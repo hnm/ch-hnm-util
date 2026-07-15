@@ -64,7 +64,7 @@
                         "readOnly": false,
                         "mandatory": true,
                         "draftable": false,
-                        "maxlength": "255",
+                        "maxlength": "1000",
                         "relativeAllowed": false,
                         "allowedProtocols": [],
                         "autoScheme": "http"

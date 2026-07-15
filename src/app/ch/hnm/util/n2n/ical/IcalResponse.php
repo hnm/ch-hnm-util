@@ -53,7 +53,7 @@ class IcalResponse extends BufferedPayload {
 	/* (non-PHPdoc)
 	 * @see \n2n\web\http\ResponseObject::prepareForResponse()
 	 */
-	public function prepareForResponse(Response $response) {
+	public function prepareForResponse(Response $response): void {
 		if (null === $this->productId) {
 			$request = $response->getRequest();
 			$this->finalProductId = $request->getHostUrl()->ext($request->getRelativeUrl());
