@@ -36,7 +36,7 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 		return $this->selectedModuleNamespaces;
 	}
 
-	public function setSelectedModuleNamespaces(array $selectedModuleNamespaces = null) {
+	public function setSelectedModuleNamespaces(?array $selectedModuleNamespaces = null) {
 		$this->selectedModuleNamespaces = $selectedModuleNamespaces;
 	}
 
@@ -44,7 +44,7 @@ class TextBlockExportForm implements Dispatchable, RequestScoped {
 		return $this->selectedLocaleIds;
 	}
 
-	public function setSelectedLocaleIds(array $selectedLocaleIds = null) {
+	public function setSelectedLocaleIds(?array $selectedLocaleIds = null) {
 		$this->selectedLocaleIds = $selectedLocaleIds;
 	}
 	

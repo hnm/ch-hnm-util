@@ -39,7 +39,6 @@ class ImportEiCommand extends IndependentEiCommandAdapter implements OverallCont
 		$n2nContext = $eiu->frame()->getN2nContext();
 		$eiUtils = $eiu->frame();
 		$eiFrame = $eiUtils->getEiFrame();
-		$httpContext = $n2nContext->getHttpContext();
 		$dtc = new DynamicTextCollection('rocket', $n2nContext->getN2nLocale());
 // 		$controllerContextPath = $httpContext->getControllerContextPath($eiUtils->getEiFrame()->getControllerContext());
 
