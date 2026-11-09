@@ -21,7 +21,7 @@
 	},
     "require": {
         "php": ">=7.0",
-        "n2n/n2n-composer-module-installer": "7.1.x-dev"
+        "n2n/n2n-composer-module-installer": "^7.1.5"
     },
     "require-dev" : {
       "phpunit/phpunit" : "^9.5"
